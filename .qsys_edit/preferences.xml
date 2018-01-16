@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<preferences>
+ <debug showDebugMenu="0" />
+ <systemtable filter="All Interfaces">
+  <columns>
+   <connections preferredWidth="191" />
+   <irq preferredWidth="79" />
+  </columns>
+ </systemtable>
+ <library
+   expandedCategories="Library/Interface Protocols/PCI Express,Library/Processors and Peripherals/Co-Processors/Nios II Custom Instructions,Project,Library/Interface Protocols/Ethernet,Library/Processors and Peripherals/Hard Processor Components,Library/Processors and Peripherals/Co-Processors,Project/System,Library/Processors and Peripherals,Library/University Program/Audio &amp; Video/Video,Library/Interface Protocols,Library/Qsys Interconnect,Library/Interface Protocols/Ethernet/10G to 1G Multi-rate Ethernet,Library/DSP/Video and Image Processing,Library/Basic Functions/DMA/mSGDMA Sub-core,Library/Memory Interfaces and Controllers/Memory Interfaces with ALTMEMPHY,Library/Interface Protocols/Serial,Library/Basic Functions,Library/Memory Interfaces and Controllers,Library,Library/Qsys Interconnect/Memory-Mapped,Library/University Program/Audio &amp; Video,Library/Memory Interfaces and Controllers/Memory Interfaces with UniPHY,Library/Basic Functions/DMA,Library/DSP,Library/Memory Interfaces and Controllers/SDRAM,Library/University Program" />
+ <window width="1382" height="784" x="-8" y="-8" />
+ <generation synthesis="VHDL" />
+</preferences>

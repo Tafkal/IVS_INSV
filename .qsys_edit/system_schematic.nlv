@@ -1,0 +1,26 @@
+# # File gsaved with Nlview version 6.3.8  2013-12-19 bk=1.2992 VDI=34 GEI=35
+# 
+preplace inst system.ack_fifo -pg 1 -lvl 3 -y 190
+preplace inst system.manager -pg 1 -lvl 2 -y 50
+preplace inst system.manager.reset_bridge -pg 1
+preplace inst system.pcu -pg 1 -lvl 3 -y 470
+preplace inst system.shared_ocm -pg 1 -lvl 2 -y 470
+preplace inst system.pll_0 -pg 1 -lvl 2 -y 350
+preplace inst system.mutex -pg 1 -lvl 3 -y 390
+preplace inst system.manager_jtag_uart -pg 1 -lvl 3 -y 90
+preplace inst system.sdram -pg 1 -lvl 2 -y 590
+preplace inst system.manager.clock_bridge -pg 1
+preplace inst system.manager.cpu -pg 1
+preplace inst system -pg 1 -lvl 1 -y 40 -regy -20
+preplace inst system.clk_0 -pg 1 -lvl 1 -y 350
+preplace netloc EXPORT<net_container>system</net_container>(SLAVE)system.clk,(SLAVE)clk_0.clk_in) 1 0 1 NJ
+preplace netloc EXPORT<net_container>system</net_container>(MASTER)pll_0.c1,(MASTER)system.sdram_clk) 1 2 2 NJ 380 NJ
+preplace netloc EXPORT<net_container>system</net_container>(SLAVE)system.sdram,(SLAVE)sdram.wire) 1 0 2 NJ 660 NJ
+preplace netloc INTERCONNECT<net_container>system</net_container>(SLAVE)pcu.reset,(SLAVE)shared_ocm.reset1,(MASTER)clk_0.clk_reset,(SLAVE)mutex.reset,(SLAVE)ack_fifo.reset_out,(SLAVE)manager.reset,(SLAVE)ack_fifo.reset_in,(SLAVE)sdram.reset,(SLAVE)pll_0.inclk_interface_reset,(SLAVE)manager_jtag_uart.reset,(MASTER)manager.debug_reset_request) 1 1 2 260 440 660
+preplace netloc POINT_TO_POINT<net_container>system</net_container>(SLAVE)manager_jtag_uart.irq,(MASTER)manager.irq) 1 2 1 N
+preplace netloc POINT_TO_POINT<net_container>system</net_container>(MASTER)clk_0.clk,(SLAVE)pll_0.inclk_interface) 1 1 1 N
+preplace netloc FAN_OUT<net_container>system</net_container>(SLAVE)ack_fifo.clk_in,(SLAVE)manager_jtag_uart.clk,(SLAVE)pcu.clk,(MASTER)pll_0.c0,(SLAVE)manager.clk,(SLAVE)sdram.clk,(SLAVE)mutex.clk,(SLAVE)shared_ocm.clk1,(SLAVE)ack_fifo.clk_out) 1 1 2 280 200 700
+preplace netloc EXPORT<net_container>system</net_container>(SLAVE)clk_0.clk_in_reset,(SLAVE)system.reset) 1 0 1 NJ
+preplace netloc INTERCONNECT<net_container>system</net_container>(SLAVE)sdram.s1,(SLAVE)shared_ocm.s1,(SLAVE)pcu.control_slave,(SLAVE)ack_fifo.out,(SLAVE)mutex.s1,(SLAVE)manager.debug_mem_slave,(SLAVE)ack_fifo.out_csr,(SLAVE)manager_jtag_uart.avalon_jtag_slave,(SLAVE)pll_0.pll_slave,(MASTER)manager.data_master,(MASTER)manager.instruction_master) 1 1 2 300 280 680
+levelinfo -pg 1 0 50 1020
+levelinfo -hier system 60 90 420 780 930
