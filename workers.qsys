@@ -205,8 +205,8 @@ proc compose {} {
  <interface name="reset" internal="clk_0.clk_in_reset" type="reset" dir="end" />
  <interface name="wout" internal="worker_out.m0" type="avalon" dir="start" />
  <module name="clk_0" kind="clock_source" version="17.0" enabled="1">
-  <parameter name="clockFrequency" value="50000000" />
-  <parameter name="clockFrequencyKnown" value="true" />
+  <parameter name="clockFrequency" value="100000000" />
+  <parameter name="clockFrequencyKnown" value="false" />
   <parameter name="inputClockFrequency" value="0" />
   <parameter name="resetSynchronousEdges" value="NONE" />
  </module>
@@ -219,7 +219,7 @@ proc compose {} {
   <parameter name="breakOffset" value="32" />
   <parameter name="breakSlave" value="None" />
   <parameter name="cdx_enabled" value="false" />
-  <parameter name="clockFrequency" value="50000000" />
+  <parameter name="clockFrequency" value="0" />
   <parameter name="cpuArchRev" value="1" />
   <parameter name="cpuID" value="1" />
   <parameter name="cpuReset" value="false" />
@@ -397,7 +397,7 @@ proc compose {} {
   <parameter name="breakOffset" value="32" />
   <parameter name="breakSlave" value="None" />
   <parameter name="cdx_enabled" value="false" />
-  <parameter name="clockFrequency" value="50000000" />
+  <parameter name="clockFrequency" value="0" />
   <parameter name="cpuArchRev" value="1" />
   <parameter name="cpuID" value="2" />
   <parameter name="cpuReset" value="false" />
@@ -575,7 +575,7 @@ proc compose {} {
   <parameter name="breakOffset" value="32" />
   <parameter name="breakSlave" value="None" />
   <parameter name="cdx_enabled" value="false" />
-  <parameter name="clockFrequency" value="50000000" />
+  <parameter name="clockFrequency" value="0" />
   <parameter name="cpuArchRev" value="1" />
   <parameter name="cpuID" value="3" />
   <parameter name="cpuReset" value="false" />
@@ -753,7 +753,7 @@ proc compose {} {
   <parameter name="breakOffset" value="32" />
   <parameter name="breakSlave" value="None" />
   <parameter name="cdx_enabled" value="false" />
-  <parameter name="clockFrequency" value="50000000" />
+  <parameter name="clockFrequency" value="0" />
   <parameter name="cpuArchRev" value="1" />
   <parameter name="cpuID" value="4" />
   <parameter name="cpuReset" value="false" />
@@ -929,7 +929,7 @@ proc compose {} {
    enabled="1">
   <parameter name="allowMultipleConnections" value="false" />
   <parameter name="avalonSpec" value="2.0" />
-  <parameter name="clkFreq" value="50000000" />
+  <parameter name="clkFreq" value="0" />
   <parameter name="hubInstanceID" value="0" />
   <parameter name="readBufferDepth" value="64" />
   <parameter name="readIRQThreshold" value="8" />
@@ -948,7 +948,7 @@ proc compose {} {
    enabled="1">
   <parameter name="allowMultipleConnections" value="false" />
   <parameter name="avalonSpec" value="2.0" />
-  <parameter name="clkFreq" value="50000000" />
+  <parameter name="clkFreq" value="0" />
   <parameter name="hubInstanceID" value="0" />
   <parameter name="readBufferDepth" value="64" />
   <parameter name="readIRQThreshold" value="8" />
@@ -967,7 +967,7 @@ proc compose {} {
    enabled="1">
   <parameter name="allowMultipleConnections" value="false" />
   <parameter name="avalonSpec" value="2.0" />
-  <parameter name="clkFreq" value="50000000" />
+  <parameter name="clkFreq" value="0" />
   <parameter name="hubInstanceID" value="0" />
   <parameter name="readBufferDepth" value="64" />
   <parameter name="readIRQThreshold" value="8" />
@@ -986,7 +986,7 @@ proc compose {} {
    enabled="1">
   <parameter name="allowMultipleConnections" value="false" />
   <parameter name="avalonSpec" value="2.0" />
-  <parameter name="clkFreq" value="50000000" />
+  <parameter name="clkFreq" value="0" />
   <parameter name="hubInstanceID" value="0" />
   <parameter name="readBufferDepth" value="64" />
   <parameter name="readIRQThreshold" value="8" />

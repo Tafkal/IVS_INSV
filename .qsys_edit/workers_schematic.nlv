@@ -9,8 +9,8 @@ preplace inst workers.cpu_3.clock_bridge -pg 1
 preplace inst workers.cpu_1.reset_bridge -pg 1
 preplace inst workers.cpu_0 -pg 1 -lvl 3 -y 180
 preplace inst workers.cpu_3.reset_bridge -pg 1
-preplace inst workers.cpu_1 -pg 1 -lvl 2 -y 90
-preplace inst workers.cpu_2 -pg 1 -lvl 2 -y 250
+preplace inst workers.cpu_1 -pg 1 -lvl 2 -y 50
+preplace inst workers.cpu_2 -pg 1 -lvl 2 -y 230
 preplace inst workers.cpu_1.clock_bridge -pg 1
 preplace inst workers.cpu_3 -pg 1 -lvl 2 -y 430
 preplace inst workers.cpu_3.cpu -pg 1
@@ -23,15 +23,15 @@ preplace inst workers.cpu_2.cpu -pg 1
 preplace inst workers.cpu_0.cpu -pg 1
 preplace inst workers.cpu_0.reset_bridge -pg 1
 preplace inst workers.jtag_uart_0 -pg 1 -lvl 4 -y 190
-preplace netloc EXPORT<net_container>workers</net_container>(SLAVE)clk_0.clk_in_reset,(SLAVE)workers.reset) 1 0 1 NJ
-preplace netloc POINT_TO_POINT<net_container>workers</net_container>(MASTER)cpu_1.irq,(SLAVE)jtag_uart_1.irq) 1 2 2 700 140 NJ
+preplace netloc EXPORT<net_container>workers</net_container>(MASTER)worker_out.m0,(MASTER)workers.wout) 1 4 1 N
+preplace netloc INTERCONNECT<net_container>workers</net_container>(SLAVE)jtag_uart_0.avalon_jtag_slave,(MASTER)cpu_3.instruction_master,(SLAVE)cpu_2.debug_mem_slave,(SLAVE)jtag_uart_1.avalon_jtag_slave,(MASTER)cpu_1.data_master,(SLAVE)cpu_1.debug_mem_slave,(SLAVE)cpu_3.debug_mem_slave,(MASTER)cpu_0.data_master,(MASTER)cpu_2.data_master,(SLAVE)worker_out.s0,(MASTER)cpu_3.data_master,(SLAVE)jtag_uart_2.avalon_jtag_slave,(SLAVE)jtag_uart_3.avalon_jtag_slave,(SLAVE)cpu_0.debug_mem_slave,(MASTER)cpu_0.instruction_master,(MASTER)cpu_2.instruction_master,(MASTER)cpu_1.instruction_master) 1 1 3 300 370 680 320 1080
+preplace netloc POINT_TO_POINT<net_container>workers</net_container>(SLAVE)jtag_uart_2.irq,(MASTER)cpu_2.irq) 1 2 2 NJ 360 1180
+preplace netloc POINT_TO_POINT<net_container>workers</net_container>(MASTER)cpu_1.irq,(SLAVE)jtag_uart_1.irq) 1 2 2 N 140 NJ
 preplace netloc POINT_TO_POINT<net_container>workers</net_container>(MASTER)cpu_3.irq,(SLAVE)jtag_uart_3.irq) 1 2 2 NJ 520 1100
 preplace netloc POINT_TO_POINT<net_container>workers</net_container>(MASTER)cpu_0.irq,(SLAVE)jtag_uart_0.irq) 1 3 1 1140
-preplace netloc POINT_TO_POINT<net_container>workers</net_container>(MASTER)cpu_2.irq,(SLAVE)jtag_uart_2.irq) 1 2 2 N 340 NJ
-preplace netloc EXPORT<net_container>workers</net_container>(SLAVE)clk_0.clk_in,(SLAVE)workers.clk) 1 0 1 NJ
-preplace netloc INTERCONNECT<net_container>workers</net_container>(SLAVE)worker_out.s0,(MASTER)cpu_0.instruction_master,(SLAVE)cpu_0.debug_mem_slave,(MASTER)cpu_0.data_master,(SLAVE)jtag_uart_0.avalon_jtag_slave,(MASTER)cpu_1.data_master,(MASTER)cpu_2.data_master,(SLAVE)jtag_uart_1.avalon_jtag_slave,(MASTER)cpu_3.data_master,(SLAVE)jtag_uart_3.avalon_jtag_slave,(SLAVE)cpu_1.debug_mem_slave,(SLAVE)cpu_3.debug_mem_slave,(MASTER)cpu_1.instruction_master,(SLAVE)jtag_uart_2.avalon_jtag_slave,(MASTER)cpu_3.instruction_master,(MASTER)cpu_2.instruction_master,(SLAVE)cpu_2.debug_mem_slave) 1 1 3 300 50 680 320 1080
-preplace netloc FAN_OUT<net_container>workers</net_container>(SLAVE)cpu_3.clk,(MASTER)clk_0.clk,(SLAVE)jtag_uart_2.clk,(SLAVE)jtag_uart_1.clk,(SLAVE)jtag_uart_3.clk,(SLAVE)cpu_2.clk,(SLAVE)cpu_0.clk,(SLAVE)jtag_uart_0.clk,(SLAVE)worker_out.clk,(SLAVE)cpu_1.clk) 1 1 3 280 30 720 120 1160
-preplace netloc EXPORT<net_container>workers</net_container>(MASTER)workers.wout,(MASTER)worker_out.m0) 1 4 1 N
-preplace netloc INTERCONNECT<net_container>workers</net_container>(SLAVE)cpu_1.reset,(MASTER)cpu_2.debug_reset_request,(SLAVE)jtag_uart_3.reset,(SLAVE)worker_out.reset,(MASTER)clk_0.clk_reset,(MASTER)cpu_1.debug_reset_request,(SLAVE)cpu_0.reset,(SLAVE)cpu_3.reset,(SLAVE)jtag_uart_2.reset,(SLAVE)jtag_uart_1.reset,(SLAVE)cpu_2.reset,(MASTER)cpu_0.debug_reset_request,(MASTER)cpu_3.debug_reset_request,(SLAVE)jtag_uart_0.reset) 1 1 3 260 390 660 480 1120
-levelinfo -pg 1 0 50 1390
-levelinfo -hier workers 60 90 420 840 1190 1330
+preplace netloc EXPORT<net_container>workers</net_container>(SLAVE)workers.reset,(SLAVE)clk_0.clk_in_reset) 1 0 1 NJ
+preplace netloc INTERCONNECT<net_container>workers</net_container>(SLAVE)jtag_uart_3.reset,(MASTER)cpu_0.debug_reset_request,(SLAVE)cpu_3.reset,(SLAVE)worker_out.reset,(MASTER)cpu_1.debug_reset_request,(SLAVE)jtag_uart_2.reset,(SLAVE)cpu_2.reset,(MASTER)clk_0.clk_reset,(SLAVE)cpu_1.reset,(SLAVE)jtag_uart_0.reset,(MASTER)cpu_2.debug_reset_request,(SLAVE)jtag_uart_1.reset,(MASTER)cpu_3.debug_reset_request,(SLAVE)cpu_0.reset) 1 1 3 280 390 700 340 1120
+preplace netloc FAN_OUT<net_container>workers</net_container>(SLAVE)jtag_uart_3.clk,(MASTER)clk_0.clk,(SLAVE)cpu_1.clk,(SLAVE)cpu_2.clk,(SLAVE)jtag_uart_2.clk,(SLAVE)jtag_uart_0.clk,(SLAVE)worker_out.clk,(SLAVE)jtag_uart_1.clk,(SLAVE)cpu_0.clk,(SLAVE)cpu_3.clk) 1 1 3 260 190 720 120 1160
+preplace netloc EXPORT<net_container>workers</net_container>(SLAVE)workers.clk,(SLAVE)clk_0.clk_in) 1 0 1 NJ
+levelinfo -pg 1 0 50 1410
+levelinfo -hier workers 60 90 420 840 1210 1350

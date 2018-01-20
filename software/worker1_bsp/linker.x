@@ -4,7 +4,7 @@
  * Machine generated for CPU 'workers_cpu_1' in SOPC Builder design 'system'
  * SOPC Builder design path: ../../system.sopcinfo
  *
- * Generated: Tue Jan 16 21:27:34 CET 2018
+ * Generated: Sat Jan 20 13:59:30 CET 2018
  */
 
 /*
@@ -51,9 +51,9 @@
 MEMORY
 {
     shared_ocm : ORIGIN = 0x10001000, LENGTH = 1024
+    sdram_BEFORE_RESET : ORIGIN = 0x14000000, LENGTH = 8192
     reset : ORIGIN = 0x14002000, LENGTH = 32
     sdram : ORIGIN = 0x14002020, LENGTH = 8160
-    shared_sdram : ORIGIN = 0x14108000, LENGTH = 32473088
 }
 
 /* Define symbols for each memory base-address */

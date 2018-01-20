@@ -4,12 +4,12 @@
  *
  * The manager is a processor with the following tasks:
  * 	- reading of the matrices parameters and the heat sources values
- * 	and positions from the computer
+ * 	and posiitons from the computer
  * 	- initializing two matrices in SDRAM for heat transfer calculation
  *	- organization of the task division between workers in the On-Chip memory;
  *	the task must contain the information of the region that the worker must
  *	process and the information from which matrix to read the elements, ie.
- *	to which matrix to store the new elements
+ *	to which matric to store the new elements
  *	- sending the calculated heat transfer map to the computer
  *
  * @date 2018

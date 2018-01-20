@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <EnsembleReport name="system" kind="system" version="1.0" fabric="QSYS">
  <!-- Format version 17.0 602 (Future versions may contain additional information.) -->
- <!-- 2018.01.16.13:57:12 -->
+ <!-- 2018.01.20.13:36:38 -->
  <!-- A collection of modules and connections -->
  <parameter name="AUTO_GENERATION_ID">
   <type>java.lang.Integer</type>
-  <value>1516107429</value>
+  <value>1516451795</value>
   <derived>false</derived>
   <enabled>true</enabled>
   <visible>false</visible>
@@ -11611,7 +11611,7 @@ parameters are a RESULT of the module parameters. -->
 the requested settings for a module instance. -->
   <parameter name="AUTO_GENERATION_ID">
    <type>java.lang.Integer</type>
-   <value>1516107429</value>
+   <value>1516451795</value>
    <derived>false</derived>
    <enabled>true</enabled>
    <visible>false</visible>
@@ -12208,7 +12208,7 @@ parameters are a RESULT of the module parameters. -->
 the requested settings for a module instance. -->
   <parameter name="clockFrequency">
    <type>long</type>
-   <value>50000000</value>
+   <value>100000000</value>
    <derived>false</derived>
    <enabled>true</enabled>
    <visible>true</visible>
@@ -12216,7 +12216,7 @@ the requested settings for a module instance. -->
   </parameter>
   <parameter name="clockFrequencyKnown">
    <type>boolean</type>
-   <value>true</value>
+   <value>false</value>
    <derived>false</derived>
    <enabled>true</enabled>
    <visible>true</visible>
