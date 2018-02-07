@@ -4,7 +4,7 @@
  * Machine generated for CPU 'workers_cpu_1' in SOPC Builder design 'system'
  * SOPC Builder design path: ../../system.sopcinfo
  *
- * Generated: Sat Jan 20 13:59:30 CET 2018
+ * Generated: Wed Feb 07 11:03:25 CET 2018
  */
 
 /*
@@ -65,14 +65,14 @@
  *
  */
 
-#define RESET_REGION_BASE 0x14002000
+#define RESET_REGION_BASE 0x14480000
 #define RESET_REGION_SPAN 32
-#define SDRAM_BEFORE_RESET_REGION_BASE 0x14000000
-#define SDRAM_BEFORE_RESET_REGION_SPAN 8192
-#define SDRAM_REGION_BASE 0x14002020
-#define SDRAM_REGION_SPAN 8160
-#define SHARED_OCM_REGION_BASE 0x10001000
+#define SDRAM_REGION_BASE 0x14480020
+#define SDRAM_REGION_SPAN 4718560
+#define SHARED_OCM_REGION_BASE 0x20001000
 #define SHARED_OCM_REGION_SPAN 1024
+#define SHARED_SDRAM_REGION_BASE 0x15600000
+#define SHARED_SDRAM_REGION_SPAN 10485760
 
 
 /*

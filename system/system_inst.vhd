@@ -2,7 +2,7 @@
 		port (
 			clk_clk       : in    std_logic                     := 'X';             -- clk
 			reset_reset_n : in    std_logic                     := 'X';             -- reset_n
-			sdram_addr    : out   std_logic_vector(11 downto 0);                    -- addr
+			sdram_addr    : out   std_logic_vector(12 downto 0);                    -- addr
 			sdram_ba      : out   std_logic_vector(1 downto 0);                     -- ba
 			sdram_cas_n   : out   std_logic;                                        -- cas_n
 			sdram_cke     : out   std_logic;                                        -- cke

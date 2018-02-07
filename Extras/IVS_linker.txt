@@ -1,0 +1,21 @@
+shared_sdram: offset: 23068672 size: 10485760
+
+manager:
+reset: offset: 18874368
+sdram: offset: 18874400 size: 4194272
+
+worker0
+reset: offset: 0
+sdram: offset: 32 size: 4718560
+
+worker1
+reset: offset: 4718592
+sdram: offset: 4718624 size: 4718560
+
+worker2
+reset: offset: 9437184
+sdram: offset: 9437216 size: 4718560
+
+worker3
+reset: offset: 14155776
+sdram: offset: 14155808 size: 4718560

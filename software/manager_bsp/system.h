@@ -4,7 +4,7 @@
  * Machine generated for CPU 'manager' in SOPC Builder design 'system'
  * SOPC Builder design path: ../../system.sopcinfo
  *
- * Generated: Tue Jan 16 14:39:06 CET 2018
+ * Generated: Tue Feb 06 20:49:21 CET 2018
  */
 
 /*
@@ -65,15 +65,15 @@
 #define ALT_CPU_BREAK_ADDR 0x00000820
 #define ALT_CPU_CPU_ARCH_NIOS2_R1
 #define ALT_CPU_CPU_FREQ 100000000u
-#define ALT_CPU_CPU_ID_SIZE 1
-#define ALT_CPU_CPU_ID_VALUE 0x00000000
+#define ALT_CPU_CPU_ID_SIZE 3
+#define ALT_CPU_CPU_ID_VALUE 0x00000005
 #define ALT_CPU_CPU_IMPLEMENTATION "fast"
 #define ALT_CPU_DATA_ADDR_WIDTH 0x1b
 #define ALT_CPU_DCACHE_BYPASS_MASK 0x80000000
 #define ALT_CPU_DCACHE_LINE_SIZE 32
 #define ALT_CPU_DCACHE_LINE_SIZE_LOG2 5
 #define ALT_CPU_DCACHE_SIZE 1024
-#define ALT_CPU_EXCEPTION_ADDR 0x04008020
+#define ALT_CPU_EXCEPTION_ADDR 0x05200020
 #define ALT_CPU_FLASH_ACCELERATOR_LINES 0
 #define ALT_CPU_FLASH_ACCELERATOR_LINE_SIZE 0
 #define ALT_CPU_FLUSHDA_SUPPORTED
@@ -94,7 +94,7 @@
 #define ALT_CPU_NAME "manager"
 #define ALT_CPU_NUM_OF_SHADOW_REG_SETS 0
 #define ALT_CPU_OCI_VERSION 1
-#define ALT_CPU_RESET_ADDR 0x04008000
+#define ALT_CPU_RESET_ADDR 0x05200000
 
 
 /*
@@ -106,15 +106,15 @@
 #define NIOS2_BREAK_ADDR 0x00000820
 #define NIOS2_CPU_ARCH_NIOS2_R1
 #define NIOS2_CPU_FREQ 100000000u
-#define NIOS2_CPU_ID_SIZE 1
-#define NIOS2_CPU_ID_VALUE 0x00000000
+#define NIOS2_CPU_ID_SIZE 3
+#define NIOS2_CPU_ID_VALUE 0x00000005
 #define NIOS2_CPU_IMPLEMENTATION "fast"
 #define NIOS2_DATA_ADDR_WIDTH 0x1b
 #define NIOS2_DCACHE_BYPASS_MASK 0x80000000
 #define NIOS2_DCACHE_LINE_SIZE 32
 #define NIOS2_DCACHE_LINE_SIZE_LOG2 5
 #define NIOS2_DCACHE_SIZE 1024
-#define NIOS2_EXCEPTION_ADDR 0x04008020
+#define NIOS2_EXCEPTION_ADDR 0x05200020
 #define NIOS2_FLASH_ACCELERATOR_LINES 0
 #define NIOS2_FLASH_ACCELERATOR_LINE_SIZE 0
 #define NIOS2_FLUSHDA_SUPPORTED
@@ -133,7 +133,7 @@
 #define NIOS2_INST_ADDR_WIDTH 0x1b
 #define NIOS2_NUM_OF_SHADOW_REG_SETS 0
 #define NIOS2_OCI_VERSION 1
-#define NIOS2_RESET_ADDR 0x04008000
+#define NIOS2_RESET_ADDR 0x05200000
 
 
 /*
@@ -148,7 +148,6 @@
 #define __ALTERA_AVALON_ONCHIP_MEMORY2
 #define __ALTERA_AVALON_PERFORMANCE_COUNTER
 #define __ALTERA_NIOS2_GEN2
-#define __ALTPLL
 
 
 /*
@@ -167,19 +166,19 @@
 #define ALT_NUM_INTERNAL_INTERRUPT_CONTROLLERS 1
 #define ALT_NUM_INTERRUPT_CONTROLLERS 1
 #define ALT_STDERR "/dev/manager_jtag_uart"
-#define ALT_STDERR_BASE 0x1460
+#define ALT_STDERR_BASE 0x1450
 #define ALT_STDERR_DEV manager_jtag_uart
 #define ALT_STDERR_IS_JTAG_UART
 #define ALT_STDERR_PRESENT
 #define ALT_STDERR_TYPE "altera_avalon_jtag_uart"
 #define ALT_STDIN "/dev/manager_jtag_uart"
-#define ALT_STDIN_BASE 0x1460
+#define ALT_STDIN_BASE 0x1450
 #define ALT_STDIN_DEV manager_jtag_uart
 #define ALT_STDIN_IS_JTAG_UART
 #define ALT_STDIN_PRESENT
 #define ALT_STDIN_TYPE "altera_avalon_jtag_uart"
 #define ALT_STDOUT "/dev/manager_jtag_uart"
-#define ALT_STDOUT_BASE 0x1460
+#define ALT_STDOUT_BASE 0x1450
 #define ALT_STDOUT_DEV manager_jtag_uart
 #define ALT_STDOUT_IS_JTAG_UART
 #define ALT_STDOUT_PRESENT
@@ -194,7 +193,7 @@
 
 #define ACK_FIFO_OUT_AVALONMM_AVALONMM_DATA_WIDTH 32
 #define ACK_FIFO_OUT_AVALONMM_AVALONST_DATA_WIDTH 32
-#define ACK_FIFO_OUT_BASE 0x1468
+#define ACK_FIFO_OUT_BASE 0x1458
 #define ACK_FIFO_OUT_BITS_PER_SYMBOL 16
 #define ACK_FIFO_OUT_CHANNEL_WIDTH 8
 #define ACK_FIFO_OUT_ERROR_WIDTH 8
@@ -276,7 +275,7 @@
  */
 
 #define ALT_MODULE_CLASS_manager_jtag_uart altera_avalon_jtag_uart
-#define MANAGER_JTAG_UART_BASE 0x1460
+#define MANAGER_JTAG_UART_BASE 0x1450
 #define MANAGER_JTAG_UART_IRQ 0
 #define MANAGER_JTAG_UART_IRQ_INTERRUPT_CONTROLLER_ID 0
 #define MANAGER_JTAG_UART_NAME "/dev/manager_jtag_uart"
@@ -294,15 +293,15 @@
  */
 
 #define ALT_MODULE_CLASS_mutex altera_avalon_mutex
-#define MUTEX_BASE 0x1458
+#define MUTEX_BASE 0x1448
 #define MUTEX_IRQ -1
 #define MUTEX_IRQ_INTERRUPT_CONTROLLER_ID -1
 #define MUTEX_NAME "/dev/mutex"
-#define MUTEX_OWNER_INIT 1
+#define MUTEX_OWNER_INIT 5
 #define MUTEX_OWNER_WIDTH 16
 #define MUTEX_SPAN 8
 #define MUTEX_TYPE "altera_avalon_mutex"
-#define MUTEX_VALUE_INIT 1
+#define MUTEX_VALUE_INIT 5
 #define MUTEX_VALUE_WIDTH 16
 
 
@@ -319,20 +318,6 @@
 #define PCU_NAME "/dev/pcu"
 #define PCU_SPAN 32
 #define PCU_TYPE "altera_avalon_performance_counter"
-
-
-/*
- * pll_0 configuration
- *
- */
-
-#define ALT_MODULE_CLASS_pll_0 altpll
-#define PLL_0_BASE 0x1440
-#define PLL_0_IRQ -1
-#define PLL_0_IRQ_INTERRUPT_CONTROLLER_ID -1
-#define PLL_0_NAME "/dev/pll_0"
-#define PLL_0_SPAN 16
-#define PLL_0_TYPE "altpll"
 
 
 /*
@@ -355,11 +340,11 @@
 #define SDRAM_REGISTER_DATA_IN 1
 #define SDRAM_SDRAM_ADDR_WIDTH 0x18
 #define SDRAM_SDRAM_BANK_WIDTH 2
-#define SDRAM_SDRAM_COL_WIDTH 10
+#define SDRAM_SDRAM_COL_WIDTH 9
 #define SDRAM_SDRAM_DATA_WIDTH 16
 #define SDRAM_SDRAM_NUM_BANKS 4
 #define SDRAM_SDRAM_NUM_CHIPSELECTS 1
-#define SDRAM_SDRAM_ROW_WIDTH 12
+#define SDRAM_SDRAM_ROW_WIDTH 13
 #define SDRAM_SHARED_DATA 0
 #define SDRAM_SIM_MODEL_BASE 0
 #define SDRAM_SPAN 33554432

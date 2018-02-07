@@ -3,7 +3,7 @@
 # Machine generated for CPU 'workers_cpu_0' in SOPC Builder design 'system'
 # SOPC Builder design path: ../../system.sopcinfo
 #
-# Generated: Tue Jan 16 14:11:26 CET 2018
+# Generated: Wed Feb 07 10:55:27 CET 2018
 
 # DO NOT MODIFY THIS FILE
 #
@@ -46,8 +46,8 @@
 # The cache attribute is specified which improves GDB performance
 # by allowing GDB to cache memory contents on the host.
 
-# shared_ocm
-memory 0x10001000 0x10001400 cache
-
 # sdram
 memory 0x14000000 0x16000000 cache
+
+# shared_ocm
+memory 0x20001000 0x20001400 cache

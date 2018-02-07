@@ -1,0 +1,14 @@
+Analysis & Synthesis Status : Successful - Wed Feb 07 10:46:49 2018
+Quartus Prime Version : 17.0.2 Build 602 07/19/2017 SJ Lite Edition
+Revision Name : heat_equation
+Top-level Entity Name : heat_equation
+Family : Cyclone IV E
+Total logic elements : 20,253
+    Total combinational functions : 16,308
+    Dedicated logic registers : 11,518
+Total registers : 11518
+Total pins : 41
+Total virtual pins : 0
+Total memory bits : 229,760
+Embedded Multiplier 9-bit elements : 30
+Total PLLs : 1

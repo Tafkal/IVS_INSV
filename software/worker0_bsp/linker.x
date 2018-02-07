@@ -4,7 +4,7 @@
  * Machine generated for CPU 'workers_cpu_0' in SOPC Builder design 'system'
  * SOPC Builder design path: ../../system.sopcinfo
  *
- * Generated: Tue Jan 16 14:42:19 CET 2018
+ * Generated: Wed Feb 07 10:57:20 CET 2018
  */
 
 /*
@@ -50,15 +50,15 @@
 
 MEMORY
 {
-    shared_ocm : ORIGIN = 0x10001000, LENGTH = 1024
     reset : ORIGIN = 0x14000000, LENGTH = 32
-    sdram : ORIGIN = 0x14000020, LENGTH = 8160
-    shared_sdram : ORIGIN = 0x14108000, LENGTH = 32473088
+    sdram : ORIGIN = 0x14000020, LENGTH = 4718560
+    shared_sdram : ORIGIN = 0x15600000, LENGTH = 10485760
+    shared_ocm : ORIGIN = 0x20001000, LENGTH = 1024
 }
 
 /* Define symbols for each memory base-address */
-__alt_mem_shared_ocm = 0x10001000;
 __alt_mem_sdram = 0x14000000;
+__alt_mem_shared_ocm = 0x20001000;
 
 OUTPUT_FORMAT( "elf32-littlenios2",
                "elf32-littlenios2",
@@ -310,24 +310,7 @@ SECTIONS
      *
      */
 
-    .shared_ocm : AT ( LOADADDR (.bss) + SIZEOF (.bss) )
-    {
-        PROVIDE (_alt_partition_shared_ocm_start = ABSOLUTE(.));
-        *(.shared_ocm .shared_ocm. shared_ocm.*)
-        . = ALIGN(4);
-        PROVIDE (_alt_partition_shared_ocm_end = ABSOLUTE(.));
-    } > shared_ocm
-
-    PROVIDE (_alt_partition_shared_ocm_load_addr = LOADADDR(.shared_ocm));
-
-    /*
-     *
-     * This section's LMA is set to the .text region.
-     * crt0 will copy to this section's specified mapped region virtual memory address (VMA)
-     *
-     */
-
-    .sdram LOADADDR (.shared_ocm) + SIZEOF (.shared_ocm) : AT ( LOADADDR (.shared_ocm) + SIZEOF (.shared_ocm) )
+    .sdram LOADADDR (.bss) + SIZEOF (.bss) : AT ( LOADADDR (.bss) + SIZEOF (.bss) )
     {
         PROVIDE (_alt_partition_sdram_start = ABSOLUTE(.));
         *(.sdram .sdram. sdram.*)
@@ -339,6 +322,23 @@ SECTIONS
     } > sdram
 
     PROVIDE (_alt_partition_sdram_load_addr = LOADADDR(.sdram));
+
+    /*
+     *
+     * This section's LMA is set to the .text region.
+     * crt0 will copy to this section's specified mapped region virtual memory address (VMA)
+     *
+     */
+
+    .shared_ocm : AT ( LOADADDR (.sdram) + SIZEOF (.sdram) )
+    {
+        PROVIDE (_alt_partition_shared_ocm_start = ABSOLUTE(.));
+        *(.shared_ocm .shared_ocm. shared_ocm.*)
+        . = ALIGN(4);
+        PROVIDE (_alt_partition_shared_ocm_end = ABSOLUTE(.));
+    } > shared_ocm
+
+    PROVIDE (_alt_partition_shared_ocm_load_addr = LOADADDR(.shared_ocm));
 
     /*
      * Stabs debugging sections.
@@ -387,7 +387,7 @@ SECTIONS
 /*
  * Don't override this, override the __alt_stack_* symbols instead.
  */
-__alt_data_end = 0x14002000;
+__alt_data_end = 0x14480000;
 
 /*
  * The next two symbols define the location of the default stack.  You can
@@ -403,4 +403,4 @@ PROVIDE( __alt_stack_limit   = __alt_stack_base );
  * Override this symbol to put the heap in a different memory.
  */
 PROVIDE( __alt_heap_start    = end );
-PROVIDE( __alt_heap_limit    = 0x14002000 );
+PROVIDE( __alt_heap_limit    = 0x14480000 );

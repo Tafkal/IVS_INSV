@@ -4,7 +4,7 @@
  * Machine generated for CPU 'manager' in SOPC Builder design 'system'
  * SOPC Builder design path: ../../system.sopcinfo
  *
- * Generated: Tue Jan 16 14:39:06 CET 2018
+ * Generated: Tue Feb 06 20:49:21 CET 2018
  */
 
 /*
@@ -65,14 +65,14 @@
  *
  */
 
-#define RESET_REGION_BASE 0x4008000
+#define RESET_REGION_BASE 0x5200000
 #define RESET_REGION_SPAN 32
-#define SDRAM_REGION_BASE 0x4008020
-#define SDRAM_REGION_SPAN 1048544
+#define SDRAM_REGION_BASE 0x5200020
+#define SDRAM_REGION_SPAN 4194272
 #define SHARED_OCM_REGION_BASE 0x1000
 #define SHARED_OCM_REGION_SPAN 1024
-#define SHARED_SDRAM_REGION_BASE 0x4108000
-#define SHARED_SDRAM_REGION_SPAN 32473088
+#define SHARED_SDRAM_REGION_BASE 0x5600000
+#define SHARED_SDRAM_REGION_SPAN 10485760
 
 
 /*

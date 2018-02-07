@@ -57,7 +57,7 @@ wire             reset_reg_enable;
   always @(posedge clk or negedge reset_n)
     begin
       if (reset_n == 0)
-          mutex_value <= 1;
+          mutex_value <= 5;
       else if (mutex_reg_enable)
           mutex_value <= data_from_cpu[15 : 0];
     end
@@ -67,7 +67,7 @@ wire             reset_reg_enable;
   always @(posedge clk or negedge reset_n)
     begin
       if (reset_n == 0)
-          mutex_owner <= 1;
+          mutex_owner <= 5;
       else if (mutex_reg_enable)
           mutex_owner <= data_from_cpu[31 : 16];
     end

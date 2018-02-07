@@ -2,9 +2,9 @@
 <sch:Settings xmlns:sch="http://www.altera.com/embeddedsw/bsp/schema">
         <BspType>hal</BspType>
         <BspVersion>default</BspVersion>
-        <BspGeneratedTimeStamp>Jan 20, 2018 2:04:13 PM</BspGeneratedTimeStamp>
-        <BspGeneratedUnixTimeStamp>1516453453287</BspGeneratedUnixTimeStamp>
-        <BspGeneratedLocation>E:\Fax\IVS\IVS_projekat\Projekat_v2\software\manager_bsp</BspGeneratedLocation>
+        <BspGeneratedTimeStamp>Feb 7, 2018 11:19:03 AM</BspGeneratedTimeStamp>
+        <BspGeneratedUnixTimeStamp>1517998743299</BspGeneratedUnixTimeStamp>
+        <BspGeneratedLocation>E:\Fax\IVS\IVS_projekat\Projekat_v3\software\manager_bsp</BspGeneratedLocation>
         <BspSettingsFile>settings.bsp</BspSettingsFile>
         <SopcDesignFile>..\..\system.sopcinfo</SopcDesignFile>
         <JdiFile>default</JdiFile>
@@ -921,26 +921,26 @@
         <LinkerRegion>
                 <regionName>reset</regionName>
                 <memoryName>sdram</memoryName>
-                <offset>32768</offset>
+                <offset>18874368</offset>
                 <size>32</size>
-                <baseAddress>0x4008000</baseAddress>
-                <addressRange>0x04008000 - 0x0400801F</addressRange>
+                <baseAddress>0x5200000</baseAddress>
+                <addressRange>0x05200000 - 0x0520001F</addressRange>
         </LinkerRegion>
         <LinkerRegion>
                 <regionName>sdram</regionName>
                 <memoryName>sdram</memoryName>
-                <offset>32800</offset>
-                <size>1048544</size>
-                <baseAddress>0x4008020</baseAddress>
-                <addressRange>0x04008020 - 0x04107FFF</addressRange>
+                <offset>18874400</offset>
+                <size>4194272</size>
+                <baseAddress>0x5200020</baseAddress>
+                <addressRange>0x05200020 - 0x055FFFFF</addressRange>
         </LinkerRegion>
         <LinkerRegion>
                 <regionName>shared_sdram</regionName>
                 <memoryName>sdram</memoryName>
-                <offset>1081344</offset>
-                <size>32473088</size>
-                <baseAddress>0x4108000</baseAddress>
-                <addressRange>0x04108000 - 0x05FFFFFF</addressRange>
+                <offset>23068672</offset>
+                <size>10485760</size>
+                <baseAddress>0x5600000</baseAddress>
+                <addressRange>0x05600000 - 0x05FFFFFF</addressRange>
         </LinkerRegion>
         <MemoryMap>
                 <slaveDescriptor>shared_ocm</slaveDescriptor>
@@ -961,26 +961,20 @@
                 <attributes/>
         </MemoryMap>
         <MemoryMap>
-                <slaveDescriptor>pll_0</slaveDescriptor>
-                <addressRange>0x00001440 - 0x0000144F</addressRange>
-                <addressSpan>16</addressSpan>
-                <attributes/>
-        </MemoryMap>
-        <MemoryMap>
                 <slaveDescriptor>mutex</slaveDescriptor>
-                <addressRange>0x00001458 - 0x0000145F</addressRange>
+                <addressRange>0x00001448 - 0x0000144F</addressRange>
                 <addressSpan>8</addressSpan>
                 <attributes/>
         </MemoryMap>
         <MemoryMap>
                 <slaveDescriptor>manager_jtag_uart</slaveDescriptor>
-                <addressRange>0x00001460 - 0x00001467</addressRange>
+                <addressRange>0x00001450 - 0x00001457</addressRange>
                 <addressSpan>8</addressSpan>
                 <attributes>printable</attributes>
         </MemoryMap>
         <MemoryMap>
                 <slaveDescriptor>ack_fifo_out</slaveDescriptor>
-                <addressRange>0x00001468 - 0x0000146B</addressRange>
+                <addressRange>0x00001458 - 0x0000145B</addressRange>
                 <addressSpan>4</addressSpan>
                 <attributes/>
         </MemoryMap>

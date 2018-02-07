@@ -1,0 +1,16 @@
+Fitter Status : Successful - Wed Feb 07 10:50:12 2018
+Quartus Prime Version : 17.0.2 Build 602 07/19/2017 SJ Lite Edition
+Revision Name : heat_equation
+Top-level Entity Name : heat_equation
+Family : Cyclone IV E
+Device : EP4CE22F17C6
+Timing Models : Final
+Total logic elements : 18,530 / 22,320 ( 83 % )
+    Total combinational functions : 16,324 / 22,320 ( 73 % )
+    Dedicated logic registers : 11,113 / 22,320 ( 50 % )
+Total registers : 11182
+Total pins : 41 / 154 ( 27 % )
+Total virtual pins : 0
+Total memory bits : 229,760 / 608,256 ( 38 % )
+Embedded Multiplier 9-bit elements : 30 / 132 ( 23 % )
+Total PLLs : 1 / 4 ( 25 % )

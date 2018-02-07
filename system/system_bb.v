@@ -15,7 +15,7 @@ module system (
 
 	input		clk_clk;
 	input		reset_reset_n;
-	output	[11:0]	sdram_addr;
+	output	[12:0]	sdram_addr;
 	output	[1:0]	sdram_ba;
 	output		sdram_cas_n;
 	output		sdram_cke;

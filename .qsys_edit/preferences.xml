@@ -3,11 +3,12 @@
  <debug showDebugMenu="0" />
  <systemtable filter="All Interfaces">
   <columns>
-   <connections preferredWidth="191" />
-   <irq preferredWidth="79" />
+   <connections preferredWidth="207" />
+   <irq preferredWidth="47" />
   </columns>
  </systemtable>
- <library expandedCategories="Library,Project" />
+ <library
+   expandedCategories="Project,Library/Basic Functions/DMA/mSGDMA Sub-core,Library/Processors and Peripherals/Hard Processor Components,Library/DSP/Video and Image Processing,Library/Processors and Peripherals,Library/Memory Interfaces and Controllers,Library/Interface Protocols/Serial,Library/University Program/Audio &amp; Video/Video,Library/Memory Interfaces and Controllers/Memory Interfaces with UniPHY,Library/Interface Protocols,Library/Qsys Interconnect,Library/Basic Functions/DMA,Library/Interface Protocols/Ethernet/10G to 1G Multi-rate Ethernet,Library/DSP,Library/University Program/Audio &amp; Video,Library/Interface Protocols/PCI Express,Library,Library/Qsys Interconnect/Memory-Mapped,Library/Processors and Peripherals/Co-Processors/Nios II Custom Instructions,Library/Memory Interfaces and Controllers/Memory Interfaces with ALTMEMPHY,Library/University Program,Library/Memory Interfaces and Controllers/SDRAM,Library/Processors and Peripherals/Co-Processors,Library/Interface Protocols/Ethernet,Library/Basic Functions" />
  <window width="1366" height="768" x="0" y="0" />
  <generation synthesis="VHDL" />
 </preferences>

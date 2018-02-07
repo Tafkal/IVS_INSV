@@ -22,13 +22,13 @@
 <td width="20%" bgcolor="#77BBFF">BSP Version:</td><td>default</td>
 </tr>
 <tr mode="wrap">
-<td width="20%" bgcolor="#77BBFF">BSP Generated On:</td><td>Jan 20, 2018 1:55:23 PM</td>
+<td width="20%" bgcolor="#77BBFF">BSP Generated On:</td><td>Feb 7, 2018 10:57:19 AM</td>
 </tr>
 <tr mode="wrap">
-<td width="20%" bgcolor="#77BBFF">BSP Generated Timestamp:</td><td>1516452923649</td>
+<td width="20%" bgcolor="#77BBFF">BSP Generated Timestamp:</td><td>1517997439591</td>
 </tr>
 <tr mode="wrap">
-<td width="20%" bgcolor="#77BBFF">BSP Generated Location:</td><td>E:\Fax\IVS\IVS_projekat\Projekat_v2\software\worker0_bsp</td>
+<td width="20%" bgcolor="#77BBFF">BSP Generated Location:</td><td>E:\Fax\IVS\IVS_projekat\Projekat_v3\software\worker0_bsp</td>
 </tr>
 </table>
 <br>
@@ -38,19 +38,19 @@
 <th align="left" width="20%">Slave Descriptor</th><th align="left" width="40%">Address Range</th><th align="left" width="20%">Size</th><th align="left" width="20%">Attributes</th>
 </tr>
 <tr mode="wrap" STYLE="display: 'block'; font-family: 'courier'; color: '#000000'; font-weight: '500'; font-size: '14'; margin-top: '10pt'; text-align: 'left'">
+<td>mutex</td><td>0x20001448 - 0x2000144F</td><td>8</td><td class="listing">&nbsp;</td>
+</tr>
+<tr mode="wrap" STYLE="display: 'block'; font-family: 'courier'; color: '#000000'; font-weight: '500'; font-size: '14'; margin-top: '10pt'; text-align: 'left'">
+<td>shared_ocm</td><td>0x20001000 - 0x200013FF</td><td>1024</td><td class="listing">memory</td>
+</tr>
+<tr mode="wrap" STYLE="display: 'block'; font-family: 'courier'; color: '#000000'; font-weight: '500'; font-size: '14'; margin-top: '10pt'; text-align: 'left'">
+<td>ack_fifo_in</td><td>0x20000020 - 0x20000023</td><td>4</td><td class="listing">&nbsp;</td>
+</tr>
+<tr mode="wrap" STYLE="display: 'block'; font-family: 'courier'; color: '#000000'; font-weight: '500'; font-size: '14'; margin-top: '10pt'; text-align: 'left'">
+<td>ack_fifo_in_csr</td><td>0x20000000 - 0x2000001F</td><td>32</td><td class="listing">&nbsp;</td>
+</tr>
+<tr mode="wrap" STYLE="display: 'block'; font-family: 'courier'; color: '#000000'; font-weight: '500'; font-size: '14'; margin-top: '10pt'; text-align: 'left'">
 <td>sdram</td><td>0x14000000 - 0x15FFFFFF</td><td>33554432</td><td class="listing">memory</td>
-</tr>
-<tr mode="wrap" STYLE="display: 'block'; font-family: 'courier'; color: '#000000'; font-weight: '500'; font-size: '14'; margin-top: '10pt'; text-align: 'left'">
-<td>mutex</td><td>0x10001458 - 0x1000145F</td><td>8</td><td class="listing">&nbsp;</td>
-</tr>
-<tr mode="wrap" STYLE="display: 'block'; font-family: 'courier'; color: '#000000'; font-weight: '500'; font-size: '14'; margin-top: '10pt'; text-align: 'left'">
-<td>shared_ocm</td><td>0x10001000 - 0x100013FF</td><td>1024</td><td class="listing">memory</td>
-</tr>
-<tr mode="wrap" STYLE="display: 'block'; font-family: 'courier'; color: '#000000'; font-weight: '500'; font-size: '14'; margin-top: '10pt'; text-align: 'left'">
-<td>ack_fifo_in</td><td>0x10000020 - 0x10000023</td><td>4</td><td class="listing">&nbsp;</td>
-</tr>
-<tr mode="wrap" STYLE="display: 'block'; font-family: 'courier'; color: '#000000'; font-weight: '500'; font-size: '14'; margin-top: '10pt'; text-align: 'left'">
-<td>ack_fifo_in_csr</td><td>0x10000000 - 0x1000001F</td><td>32</td><td class="listing">&nbsp;</td>
 </tr>
 <tr mode="wrap" STYLE="display: 'block'; font-family: 'courier'; color: '#000000'; font-weight: '500'; font-size: '14'; margin-top: '10pt'; text-align: 'left'">
 <td>workers_jtag_uart_0</td><td>0x00001008 - 0x0000100F</td><td>8</td><td class="listing">printable</td>
@@ -64,16 +64,16 @@
 <th align="left" width="15%">Region</th><th align="left" width="40%">Address Range</th><th align="left" width="15%">Size</th><th align="left" width="15%">Memory</th><th align="left" width="15%">Offset</th>
 </tr>
 <tr mode="wrap" STYLE="display: 'block'; font-family: 'courier'; color: '#000000'; font-weight: '500'; font-size: '14'; margin-top: '10pt'; text-align: 'left'">
-<td>shared_sdram</td><td>0x14108000 - 0x15FFFFFF</td><td>32473088</td><td>sdram</td><td>1081344</td>
+<td>shared_ocm</td><td>0x20001000 - 0x200013FF</td><td>1024</td><td>shared_ocm</td><td>0</td>
 </tr>
 <tr mode="wrap" STYLE="display: 'block'; font-family: 'courier'; color: '#000000'; font-weight: '500'; font-size: '14'; margin-top: '10pt'; text-align: 'left'">
-<td>sdram</td><td>0x14000020 - 0x14001FFF</td><td>8160</td><td>sdram</td><td>32</td>
+<td>shared_sdram</td><td>0x15600000 - 0x15FFFFFF</td><td>10485760</td><td>sdram</td><td>23068672</td>
+</tr>
+<tr mode="wrap" STYLE="display: 'block'; font-family: 'courier'; color: '#000000'; font-weight: '500'; font-size: '14'; margin-top: '10pt'; text-align: 'left'">
+<td>sdram</td><td>0x14000020 - 0x1447FFFF</td><td>4718560</td><td>sdram</td><td>32</td>
 </tr>
 <tr mode="wrap" STYLE="display: 'block'; font-family: 'courier'; color: '#000000'; font-weight: '500'; font-size: '14'; margin-top: '10pt'; text-align: 'left'">
 <td>reset</td><td>0x14000000 - 0x1400001F</td><td>32</td><td>sdram</td><td>0</td>
-</tr>
-<tr mode="wrap" STYLE="display: 'block'; font-family: 'courier'; color: '#000000'; font-weight: '500'; font-size: '14'; margin-top: '10pt'; text-align: 'left'">
-<td>shared_ocm</td><td>0x10001000 - 0x100013FF</td><td>1024</td><td>shared_ocm</td><td>0</td>
 </tr>
 </table>
 <br>

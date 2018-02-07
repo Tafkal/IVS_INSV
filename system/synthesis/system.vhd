@@ -10,7 +10,7 @@ entity system is
 	port (
 		clk_clk       : in    std_logic                     := '0';             --       clk.clk
 		reset_reset_n : in    std_logic                     := '0';             --     reset.reset_n
-		sdram_addr    : out   std_logic_vector(11 downto 0);                    --     sdram.addr
+		sdram_addr    : out   std_logic_vector(12 downto 0);                    --     sdram.addr
 		sdram_ba      : out   std_logic_vector(1 downto 0);                     --          .ba
 		sdram_cas_n   : out   std_logic;                                        --          .cas_n
 		sdram_cke     : out   std_logic;                                        --          .cke
@@ -122,7 +122,7 @@ architecture rtl of system is
 		);
 	end component system_pcu;
 
-	component system_pll_0 is
+	component system_pll is
 		port (
 			clk                : in  std_logic                     := 'X';             -- clk
 			reset              : in  std_logic                     := 'X';             -- reset
@@ -133,9 +133,9 @@ architecture rtl of system is
 			writedata          : in  std_logic_vector(31 downto 0) := (others => 'X'); -- writedata
 			c0                 : out std_logic;                                        -- clk
 			c1                 : out std_logic;                                        -- clk
+			areset             : in  std_logic                     := 'X';             -- export
 			scandone           : out std_logic;                                        -- export
 			scandataout        : out std_logic;                                        -- export
-			areset             : in  std_logic                     := 'X';             -- export
 			locked             : out std_logic;                                        -- export
 			phasedone          : out std_logic;                                        -- export
 			phasecounterselect : in  std_logic_vector(3 downto 0)  := (others => 'X'); -- export
@@ -146,7 +146,7 @@ architecture rtl of system is
 			scandata           : in  std_logic                     := 'X';             -- export
 			configupdate       : in  std_logic                     := 'X'              -- export
 		);
-	end component system_pll_0;
+	end component system_pll;
 
 	component system_sdram is
 		port (
@@ -161,7 +161,7 @@ architecture rtl of system is
 			za_data        : out   std_logic_vector(15 downto 0);                    -- readdata
 			za_valid       : out   std_logic;                                        -- readdatavalid
 			za_waitrequest : out   std_logic;                                        -- waitrequest
-			zs_addr        : out   std_logic_vector(11 downto 0);                    -- export
+			zs_addr        : out   std_logic_vector(12 downto 0);                    -- export
 			zs_ba          : out   std_logic_vector(1 downto 0);                     -- export
 			zs_cas_n       : out   std_logic;                                        -- export
 			zs_cke         : out   std_logic;                                        -- export
@@ -198,122 +198,135 @@ architecture rtl of system is
 
 	component system_workers is
 		port (
-			clk_clk            : in  std_logic                     := 'X';             -- clk
-			reset_reset_n      : in  std_logic                     := 'X';             -- reset_n
-			wout_waitrequest   : in  std_logic                     := 'X';             -- waitrequest
-			wout_readdata      : in  std_logic_vector(31 downto 0) := (others => 'X'); -- readdata
-			wout_readdatavalid : in  std_logic                     := 'X';             -- readdatavalid
-			wout_burstcount    : out std_logic_vector(0 downto 0);                     -- burstcount
-			wout_writedata     : out std_logic_vector(31 downto 0);                    -- writedata
-			wout_address       : out std_logic_vector(27 downto 0);                    -- address
-			wout_write         : out std_logic;                                        -- write
-			wout_read          : out std_logic;                                        -- read
-			wout_byteenable    : out std_logic_vector(3 downto 0);                     -- byteenable
-			wout_debugaccess   : out std_logic                                         -- debugaccess
+			clk_clk                  : in  std_logic                     := 'X';             -- clk
+			reset_reset_n            : in  std_logic                     := 'X';             -- reset_n
+			w_all_out_waitrequest    : in  std_logic                     := 'X';             -- waitrequest
+			w_all_out_readdata       : in  std_logic_vector(31 downto 0) := (others => 'X'); -- readdata
+			w_all_out_readdatavalid  : in  std_logic                     := 'X';             -- readdatavalid
+			w_all_out_burstcount     : out std_logic_vector(0 downto 0);                     -- burstcount
+			w_all_out_writedata      : out std_logic_vector(31 downto 0);                    -- writedata
+			w_all_out_address        : out std_logic_vector(27 downto 0);                    -- address
+			w_all_out_write          : out std_logic;                                        -- write
+			w_all_out_read           : out std_logic;                                        -- read
+			w_all_out_byteenable     : out std_logic_vector(3 downto 0);                     -- byteenable
+			w_all_out_debugaccess    : out std_logic;                                        -- debugaccess
+			w_data_out_waitrequest   : in  std_logic                     := 'X';             -- waitrequest
+			w_data_out_readdata      : in  std_logic_vector(31 downto 0) := (others => 'X'); -- readdata
+			w_data_out_readdatavalid : in  std_logic                     := 'X';             -- readdatavalid
+			w_data_out_burstcount    : out std_logic_vector(0 downto 0);                     -- burstcount
+			w_data_out_writedata     : out std_logic_vector(31 downto 0);                    -- writedata
+			w_data_out_address       : out std_logic_vector(27 downto 0);                    -- address
+			w_data_out_write         : out std_logic;                                        -- write
+			w_data_out_read          : out std_logic;                                        -- read
+			w_data_out_byteenable    : out std_logic_vector(3 downto 0);                     -- byteenable
+			w_data_out_debugaccess   : out std_logic                                         -- debugaccess
 		);
 	end component system_workers;
 
 	component system_mm_interconnect_0 is
 		port (
-			clk_0_clk_clk                                           : in  std_logic                     := 'X';             -- clk
-			pll_0_c0_clk                                            : in  std_logic                     := 'X';             -- clk
-			manager_reset_reset_bridge_in_reset_reset               : in  std_logic                     := 'X';             -- reset
-			pll_0_inclk_interface_reset_reset_bridge_in_reset_reset : in  std_logic                     := 'X';             -- reset
-			workers_reset_reset_bridge_in_reset_reset               : in  std_logic                     := 'X';             -- reset
-			manager_data_master_address                             : in  std_logic_vector(26 downto 0) := (others => 'X'); -- address
-			manager_data_master_waitrequest                         : out std_logic;                                        -- waitrequest
-			manager_data_master_byteenable                          : in  std_logic_vector(3 downto 0)  := (others => 'X'); -- byteenable
-			manager_data_master_read                                : in  std_logic                     := 'X';             -- read
-			manager_data_master_readdata                            : out std_logic_vector(31 downto 0);                    -- readdata
-			manager_data_master_readdatavalid                       : out std_logic;                                        -- readdatavalid
-			manager_data_master_write                               : in  std_logic                     := 'X';             -- write
-			manager_data_master_writedata                           : in  std_logic_vector(31 downto 0) := (others => 'X'); -- writedata
-			manager_data_master_debugaccess                         : in  std_logic                     := 'X';             -- debugaccess
-			manager_instruction_master_address                      : in  std_logic_vector(26 downto 0) := (others => 'X'); -- address
-			manager_instruction_master_waitrequest                  : out std_logic;                                        -- waitrequest
-			manager_instruction_master_read                         : in  std_logic                     := 'X';             -- read
-			manager_instruction_master_readdata                     : out std_logic_vector(31 downto 0);                    -- readdata
-			manager_instruction_master_readdatavalid                : out std_logic;                                        -- readdatavalid
-			workers_wout_address                                    : in  std_logic_vector(27 downto 0) := (others => 'X'); -- address
-			workers_wout_waitrequest                                : out std_logic;                                        -- waitrequest
-			workers_wout_burstcount                                 : in  std_logic_vector(0 downto 0)  := (others => 'X'); -- burstcount
-			workers_wout_byteenable                                 : in  std_logic_vector(3 downto 0)  := (others => 'X'); -- byteenable
-			workers_wout_read                                       : in  std_logic                     := 'X';             -- read
-			workers_wout_readdata                                   : out std_logic_vector(31 downto 0);                    -- readdata
-			workers_wout_readdatavalid                              : out std_logic;                                        -- readdatavalid
-			workers_wout_write                                      : in  std_logic                     := 'X';             -- write
-			workers_wout_writedata                                  : in  std_logic_vector(31 downto 0) := (others => 'X'); -- writedata
-			workers_wout_debugaccess                                : in  std_logic                     := 'X';             -- debugaccess
-			ack_fifo_in_write                                       : out std_logic;                                        -- write
-			ack_fifo_in_writedata                                   : out std_logic_vector(31 downto 0);                    -- writedata
-			ack_fifo_in_waitrequest                                 : in  std_logic                     := 'X';             -- waitrequest
-			ack_fifo_in_csr_address                                 : out std_logic_vector(2 downto 0);                     -- address
-			ack_fifo_in_csr_write                                   : out std_logic;                                        -- write
-			ack_fifo_in_csr_read                                    : out std_logic;                                        -- read
-			ack_fifo_in_csr_readdata                                : in  std_logic_vector(31 downto 0) := (others => 'X'); -- readdata
-			ack_fifo_in_csr_writedata                               : out std_logic_vector(31 downto 0);                    -- writedata
-			ack_fifo_out_read                                       : out std_logic;                                        -- read
-			ack_fifo_out_readdata                                   : in  std_logic_vector(31 downto 0) := (others => 'X'); -- readdata
-			ack_fifo_out_waitrequest                                : in  std_logic                     := 'X';             -- waitrequest
-			ack_fifo_out_csr_address                                : out std_logic_vector(2 downto 0);                     -- address
-			ack_fifo_out_csr_write                                  : out std_logic;                                        -- write
-			ack_fifo_out_csr_read                                   : out std_logic;                                        -- read
-			ack_fifo_out_csr_readdata                               : in  std_logic_vector(31 downto 0) := (others => 'X'); -- readdata
-			ack_fifo_out_csr_writedata                              : out std_logic_vector(31 downto 0);                    -- writedata
-			manager_debug_mem_slave_address                         : out std_logic_vector(8 downto 0);                     -- address
-			manager_debug_mem_slave_write                           : out std_logic;                                        -- write
-			manager_debug_mem_slave_read                            : out std_logic;                                        -- read
-			manager_debug_mem_slave_readdata                        : in  std_logic_vector(31 downto 0) := (others => 'X'); -- readdata
-			manager_debug_mem_slave_writedata                       : out std_logic_vector(31 downto 0);                    -- writedata
-			manager_debug_mem_slave_byteenable                      : out std_logic_vector(3 downto 0);                     -- byteenable
-			manager_debug_mem_slave_waitrequest                     : in  std_logic                     := 'X';             -- waitrequest
-			manager_debug_mem_slave_debugaccess                     : out std_logic;                                        -- debugaccess
-			manager_jtag_uart_avalon_jtag_slave_address             : out std_logic_vector(0 downto 0);                     -- address
-			manager_jtag_uart_avalon_jtag_slave_write               : out std_logic;                                        -- write
-			manager_jtag_uart_avalon_jtag_slave_read                : out std_logic;                                        -- read
-			manager_jtag_uart_avalon_jtag_slave_readdata            : in  std_logic_vector(31 downto 0) := (others => 'X'); -- readdata
-			manager_jtag_uart_avalon_jtag_slave_writedata           : out std_logic_vector(31 downto 0);                    -- writedata
-			manager_jtag_uart_avalon_jtag_slave_waitrequest         : in  std_logic                     := 'X';             -- waitrequest
-			manager_jtag_uart_avalon_jtag_slave_chipselect          : out std_logic;                                        -- chipselect
-			mutex_s1_address                                        : out std_logic_vector(0 downto 0);                     -- address
-			mutex_s1_write                                          : out std_logic;                                        -- write
-			mutex_s1_read                                           : out std_logic;                                        -- read
-			mutex_s1_readdata                                       : in  std_logic_vector(31 downto 0) := (others => 'X'); -- readdata
-			mutex_s1_writedata                                      : out std_logic_vector(31 downto 0);                    -- writedata
-			mutex_s1_chipselect                                     : out std_logic;                                        -- chipselect
-			pcu_control_slave_address                               : out std_logic_vector(2 downto 0);                     -- address
-			pcu_control_slave_write                                 : out std_logic;                                        -- write
-			pcu_control_slave_readdata                              : in  std_logic_vector(31 downto 0) := (others => 'X'); -- readdata
-			pcu_control_slave_writedata                             : out std_logic_vector(31 downto 0);                    -- writedata
-			pcu_control_slave_begintransfer                         : out std_logic;                                        -- begintransfer
-			pll_0_pll_slave_address                                 : out std_logic_vector(1 downto 0);                     -- address
-			pll_0_pll_slave_write                                   : out std_logic;                                        -- write
-			pll_0_pll_slave_read                                    : out std_logic;                                        -- read
-			pll_0_pll_slave_readdata                                : in  std_logic_vector(31 downto 0) := (others => 'X'); -- readdata
-			pll_0_pll_slave_writedata                               : out std_logic_vector(31 downto 0);                    -- writedata
-			sdram_s1_address                                        : out std_logic_vector(23 downto 0);                    -- address
-			sdram_s1_write                                          : out std_logic;                                        -- write
-			sdram_s1_read                                           : out std_logic;                                        -- read
-			sdram_s1_readdata                                       : in  std_logic_vector(15 downto 0) := (others => 'X'); -- readdata
-			sdram_s1_writedata                                      : out std_logic_vector(15 downto 0);                    -- writedata
-			sdram_s1_byteenable                                     : out std_logic_vector(1 downto 0);                     -- byteenable
-			sdram_s1_readdatavalid                                  : in  std_logic                     := 'X';             -- readdatavalid
-			sdram_s1_waitrequest                                    : in  std_logic                     := 'X';             -- waitrequest
-			sdram_s1_chipselect                                     : out std_logic;                                        -- chipselect
-			shared_ocm_s1_address                                   : out std_logic_vector(7 downto 0);                     -- address
-			shared_ocm_s1_write                                     : out std_logic;                                        -- write
-			shared_ocm_s1_readdata                                  : in  std_logic_vector(31 downto 0) := (others => 'X'); -- readdata
-			shared_ocm_s1_writedata                                 : out std_logic_vector(31 downto 0);                    -- writedata
-			shared_ocm_s1_byteenable                                : out std_logic_vector(3 downto 0);                     -- byteenable
-			shared_ocm_s1_chipselect                                : out std_logic;                                        -- chipselect
-			shared_ocm_s1_clken                                     : out std_logic;                                        -- clken
-			shared_ocm_s2_address                                   : out std_logic_vector(7 downto 0);                     -- address
-			shared_ocm_s2_write                                     : out std_logic;                                        -- write
-			shared_ocm_s2_readdata                                  : in  std_logic_vector(31 downto 0) := (others => 'X'); -- readdata
-			shared_ocm_s2_writedata                                 : out std_logic_vector(31 downto 0);                    -- writedata
-			shared_ocm_s2_byteenable                                : out std_logic_vector(3 downto 0);                     -- byteenable
-			shared_ocm_s2_chipselect                                : out std_logic;                                        -- chipselect
-			shared_ocm_s2_clken                                     : out std_logic                                         -- clken
+			pll_c0_clk                                      : in  std_logic                     := 'X';             -- clk
+			manager_reset_reset_bridge_in_reset_reset       : in  std_logic                     := 'X';             -- reset
+			workers_reset_reset_bridge_in_reset_reset       : in  std_logic                     := 'X';             -- reset
+			manager_data_master_address                     : in  std_logic_vector(26 downto 0) := (others => 'X'); -- address
+			manager_data_master_waitrequest                 : out std_logic;                                        -- waitrequest
+			manager_data_master_byteenable                  : in  std_logic_vector(3 downto 0)  := (others => 'X'); -- byteenable
+			manager_data_master_read                        : in  std_logic                     := 'X';             -- read
+			manager_data_master_readdata                    : out std_logic_vector(31 downto 0);                    -- readdata
+			manager_data_master_readdatavalid               : out std_logic;                                        -- readdatavalid
+			manager_data_master_write                       : in  std_logic                     := 'X';             -- write
+			manager_data_master_writedata                   : in  std_logic_vector(31 downto 0) := (others => 'X'); -- writedata
+			manager_data_master_debugaccess                 : in  std_logic                     := 'X';             -- debugaccess
+			manager_instruction_master_address              : in  std_logic_vector(26 downto 0) := (others => 'X'); -- address
+			manager_instruction_master_waitrequest          : out std_logic;                                        -- waitrequest
+			manager_instruction_master_read                 : in  std_logic                     := 'X';             -- read
+			manager_instruction_master_readdata             : out std_logic_vector(31 downto 0);                    -- readdata
+			manager_instruction_master_readdatavalid        : out std_logic;                                        -- readdatavalid
+			workers_w_all_out_address                       : in  std_logic_vector(27 downto 0) := (others => 'X'); -- address
+			workers_w_all_out_waitrequest                   : out std_logic;                                        -- waitrequest
+			workers_w_all_out_burstcount                    : in  std_logic_vector(0 downto 0)  := (others => 'X'); -- burstcount
+			workers_w_all_out_byteenable                    : in  std_logic_vector(3 downto 0)  := (others => 'X'); -- byteenable
+			workers_w_all_out_read                          : in  std_logic                     := 'X';             -- read
+			workers_w_all_out_readdata                      : out std_logic_vector(31 downto 0);                    -- readdata
+			workers_w_all_out_readdatavalid                 : out std_logic;                                        -- readdatavalid
+			workers_w_all_out_write                         : in  std_logic                     := 'X';             -- write
+			workers_w_all_out_writedata                     : in  std_logic_vector(31 downto 0) := (others => 'X'); -- writedata
+			workers_w_all_out_debugaccess                   : in  std_logic                     := 'X';             -- debugaccess
+			workers_w_data_out_address                      : in  std_logic_vector(27 downto 0) := (others => 'X'); -- address
+			workers_w_data_out_waitrequest                  : out std_logic;                                        -- waitrequest
+			workers_w_data_out_burstcount                   : in  std_logic_vector(0 downto 0)  := (others => 'X'); -- burstcount
+			workers_w_data_out_byteenable                   : in  std_logic_vector(3 downto 0)  := (others => 'X'); -- byteenable
+			workers_w_data_out_read                         : in  std_logic                     := 'X';             -- read
+			workers_w_data_out_readdata                     : out std_logic_vector(31 downto 0);                    -- readdata
+			workers_w_data_out_readdatavalid                : out std_logic;                                        -- readdatavalid
+			workers_w_data_out_write                        : in  std_logic                     := 'X';             -- write
+			workers_w_data_out_writedata                    : in  std_logic_vector(31 downto 0) := (others => 'X'); -- writedata
+			workers_w_data_out_debugaccess                  : in  std_logic                     := 'X';             -- debugaccess
+			ack_fifo_in_write                               : out std_logic;                                        -- write
+			ack_fifo_in_writedata                           : out std_logic_vector(31 downto 0);                    -- writedata
+			ack_fifo_in_waitrequest                         : in  std_logic                     := 'X';             -- waitrequest
+			ack_fifo_in_csr_address                         : out std_logic_vector(2 downto 0);                     -- address
+			ack_fifo_in_csr_write                           : out std_logic;                                        -- write
+			ack_fifo_in_csr_read                            : out std_logic;                                        -- read
+			ack_fifo_in_csr_readdata                        : in  std_logic_vector(31 downto 0) := (others => 'X'); -- readdata
+			ack_fifo_in_csr_writedata                       : out std_logic_vector(31 downto 0);                    -- writedata
+			ack_fifo_out_read                               : out std_logic;                                        -- read
+			ack_fifo_out_readdata                           : in  std_logic_vector(31 downto 0) := (others => 'X'); -- readdata
+			ack_fifo_out_waitrequest                        : in  std_logic                     := 'X';             -- waitrequest
+			ack_fifo_out_csr_address                        : out std_logic_vector(2 downto 0);                     -- address
+			ack_fifo_out_csr_write                          : out std_logic;                                        -- write
+			ack_fifo_out_csr_read                           : out std_logic;                                        -- read
+			ack_fifo_out_csr_readdata                       : in  std_logic_vector(31 downto 0) := (others => 'X'); -- readdata
+			ack_fifo_out_csr_writedata                      : out std_logic_vector(31 downto 0);                    -- writedata
+			manager_debug_mem_slave_address                 : out std_logic_vector(8 downto 0);                     -- address
+			manager_debug_mem_slave_write                   : out std_logic;                                        -- write
+			manager_debug_mem_slave_read                    : out std_logic;                                        -- read
+			manager_debug_mem_slave_readdata                : in  std_logic_vector(31 downto 0) := (others => 'X'); -- readdata
+			manager_debug_mem_slave_writedata               : out std_logic_vector(31 downto 0);                    -- writedata
+			manager_debug_mem_slave_byteenable              : out std_logic_vector(3 downto 0);                     -- byteenable
+			manager_debug_mem_slave_waitrequest             : in  std_logic                     := 'X';             -- waitrequest
+			manager_debug_mem_slave_debugaccess             : out std_logic;                                        -- debugaccess
+			manager_jtag_uart_avalon_jtag_slave_address     : out std_logic_vector(0 downto 0);                     -- address
+			manager_jtag_uart_avalon_jtag_slave_write       : out std_logic;                                        -- write
+			manager_jtag_uart_avalon_jtag_slave_read        : out std_logic;                                        -- read
+			manager_jtag_uart_avalon_jtag_slave_readdata    : in  std_logic_vector(31 downto 0) := (others => 'X'); -- readdata
+			manager_jtag_uart_avalon_jtag_slave_writedata   : out std_logic_vector(31 downto 0);                    -- writedata
+			manager_jtag_uart_avalon_jtag_slave_waitrequest : in  std_logic                     := 'X';             -- waitrequest
+			manager_jtag_uart_avalon_jtag_slave_chipselect  : out std_logic;                                        -- chipselect
+			mutex_s1_address                                : out std_logic_vector(0 downto 0);                     -- address
+			mutex_s1_write                                  : out std_logic;                                        -- write
+			mutex_s1_read                                   : out std_logic;                                        -- read
+			mutex_s1_readdata                               : in  std_logic_vector(31 downto 0) := (others => 'X'); -- readdata
+			mutex_s1_writedata                              : out std_logic_vector(31 downto 0);                    -- writedata
+			mutex_s1_chipselect                             : out std_logic;                                        -- chipselect
+			pcu_control_slave_address                       : out std_logic_vector(2 downto 0);                     -- address
+			pcu_control_slave_write                         : out std_logic;                                        -- write
+			pcu_control_slave_readdata                      : in  std_logic_vector(31 downto 0) := (others => 'X'); -- readdata
+			pcu_control_slave_writedata                     : out std_logic_vector(31 downto 0);                    -- writedata
+			pcu_control_slave_begintransfer                 : out std_logic;                                        -- begintransfer
+			sdram_s1_address                                : out std_logic_vector(23 downto 0);                    -- address
+			sdram_s1_write                                  : out std_logic;                                        -- write
+			sdram_s1_read                                   : out std_logic;                                        -- read
+			sdram_s1_readdata                               : in  std_logic_vector(15 downto 0) := (others => 'X'); -- readdata
+			sdram_s1_writedata                              : out std_logic_vector(15 downto 0);                    -- writedata
+			sdram_s1_byteenable                             : out std_logic_vector(1 downto 0);                     -- byteenable
+			sdram_s1_readdatavalid                          : in  std_logic                     := 'X';             -- readdatavalid
+			sdram_s1_waitrequest                            : in  std_logic                     := 'X';             -- waitrequest
+			sdram_s1_chipselect                             : out std_logic;                                        -- chipselect
+			shared_ocm_s1_address                           : out std_logic_vector(7 downto 0);                     -- address
+			shared_ocm_s1_write                             : out std_logic;                                        -- write
+			shared_ocm_s1_readdata                          : in  std_logic_vector(31 downto 0) := (others => 'X'); -- readdata
+			shared_ocm_s1_writedata                         : out std_logic_vector(31 downto 0);                    -- writedata
+			shared_ocm_s1_byteenable                        : out std_logic_vector(3 downto 0);                     -- byteenable
+			shared_ocm_s1_chipselect                        : out std_logic;                                        -- chipselect
+			shared_ocm_s1_clken                             : out std_logic;                                        -- clken
+			shared_ocm_s2_address                           : out std_logic_vector(7 downto 0);                     -- address
+			shared_ocm_s2_write                             : out std_logic;                                        -- write
+			shared_ocm_s2_readdata                          : in  std_logic_vector(31 downto 0) := (others => 'X'); -- readdata
+			shared_ocm_s2_writedata                         : out std_logic_vector(31 downto 0);                    -- writedata
+			shared_ocm_s2_byteenable                        : out std_logic_vector(3 downto 0);                     -- byteenable
+			shared_ocm_s2_chipselect                        : out std_logic;                                        -- chipselect
+			shared_ocm_s2_clken                             : out std_logic                                         -- clken
 		);
 	end component system_mm_interconnect_0;
 
@@ -458,7 +471,7 @@ architecture rtl of system is
 		);
 	end component system_rst_controller_001;
 
-	signal pll_0_c0_clk                                                          : std_logic;                     -- pll_0:c0 -> [ack_fifo:rdclock, ack_fifo:wrclock, irq_mapper:clk, manager:clk, manager_jtag_uart:clk, mm_interconnect_0:pll_0_c0_clk, mutex:clk, pcu:clk, rst_controller:clk, sdram:clk, shared_ocm:clk, workers:clk_clk]
+	signal pll_c0_clk                                                            : std_logic;                     -- pll:c0 -> [ack_fifo:rdclock, ack_fifo:wrclock, irq_mapper:clk, manager:clk, manager_jtag_uart:clk, mm_interconnect_0:pll_c0_clk, mutex:clk, pcu:clk, rst_controller:clk, sdram:clk, shared_ocm:clk, workers:clk_clk]
 	signal manager_data_master_readdata                                          : std_logic_vector(31 downto 0); -- mm_interconnect_0:manager_data_master_readdata -> manager:d_readdata
 	signal manager_data_master_waitrequest                                       : std_logic;                     -- mm_interconnect_0:manager_data_master_waitrequest -> manager:d_waitrequest
 	signal manager_data_master_debugaccess                                       : std_logic;                     -- manager:debug_mem_slave_debugaccess_to_roms -> mm_interconnect_0:manager_data_master_debugaccess
@@ -473,16 +486,26 @@ architecture rtl of system is
 	signal manager_instruction_master_address                                    : std_logic_vector(26 downto 0); -- manager:i_address -> mm_interconnect_0:manager_instruction_master_address
 	signal manager_instruction_master_read                                       : std_logic;                     -- manager:i_read -> mm_interconnect_0:manager_instruction_master_read
 	signal manager_instruction_master_readdatavalid                              : std_logic;                     -- mm_interconnect_0:manager_instruction_master_readdatavalid -> manager:i_readdatavalid
-	signal workers_wout_waitrequest                                              : std_logic;                     -- mm_interconnect_0:workers_wout_waitrequest -> workers:wout_waitrequest
-	signal workers_wout_readdata                                                 : std_logic_vector(31 downto 0); -- mm_interconnect_0:workers_wout_readdata -> workers:wout_readdata
-	signal workers_wout_debugaccess                                              : std_logic;                     -- workers:wout_debugaccess -> mm_interconnect_0:workers_wout_debugaccess
-	signal workers_wout_address                                                  : std_logic_vector(27 downto 0); -- workers:wout_address -> mm_interconnect_0:workers_wout_address
-	signal workers_wout_read                                                     : std_logic;                     -- workers:wout_read -> mm_interconnect_0:workers_wout_read
-	signal workers_wout_byteenable                                               : std_logic_vector(3 downto 0);  -- workers:wout_byteenable -> mm_interconnect_0:workers_wout_byteenable
-	signal workers_wout_readdatavalid                                            : std_logic;                     -- mm_interconnect_0:workers_wout_readdatavalid -> workers:wout_readdatavalid
-	signal workers_wout_writedata                                                : std_logic_vector(31 downto 0); -- workers:wout_writedata -> mm_interconnect_0:workers_wout_writedata
-	signal workers_wout_write                                                    : std_logic;                     -- workers:wout_write -> mm_interconnect_0:workers_wout_write
-	signal workers_wout_burstcount                                               : std_logic_vector(0 downto 0);  -- workers:wout_burstcount -> mm_interconnect_0:workers_wout_burstcount
+	signal workers_w_all_out_waitrequest                                         : std_logic;                     -- mm_interconnect_0:workers_w_all_out_waitrequest -> workers:w_all_out_waitrequest
+	signal workers_w_all_out_readdata                                            : std_logic_vector(31 downto 0); -- mm_interconnect_0:workers_w_all_out_readdata -> workers:w_all_out_readdata
+	signal workers_w_all_out_debugaccess                                         : std_logic;                     -- workers:w_all_out_debugaccess -> mm_interconnect_0:workers_w_all_out_debugaccess
+	signal workers_w_all_out_address                                             : std_logic_vector(27 downto 0); -- workers:w_all_out_address -> mm_interconnect_0:workers_w_all_out_address
+	signal workers_w_all_out_read                                                : std_logic;                     -- workers:w_all_out_read -> mm_interconnect_0:workers_w_all_out_read
+	signal workers_w_all_out_byteenable                                          : std_logic_vector(3 downto 0);  -- workers:w_all_out_byteenable -> mm_interconnect_0:workers_w_all_out_byteenable
+	signal workers_w_all_out_readdatavalid                                       : std_logic;                     -- mm_interconnect_0:workers_w_all_out_readdatavalid -> workers:w_all_out_readdatavalid
+	signal workers_w_all_out_writedata                                           : std_logic_vector(31 downto 0); -- workers:w_all_out_writedata -> mm_interconnect_0:workers_w_all_out_writedata
+	signal workers_w_all_out_write                                               : std_logic;                     -- workers:w_all_out_write -> mm_interconnect_0:workers_w_all_out_write
+	signal workers_w_all_out_burstcount                                          : std_logic_vector(0 downto 0);  -- workers:w_all_out_burstcount -> mm_interconnect_0:workers_w_all_out_burstcount
+	signal workers_w_data_out_waitrequest                                        : std_logic;                     -- mm_interconnect_0:workers_w_data_out_waitrequest -> workers:w_data_out_waitrequest
+	signal workers_w_data_out_readdata                                           : std_logic_vector(31 downto 0); -- mm_interconnect_0:workers_w_data_out_readdata -> workers:w_data_out_readdata
+	signal workers_w_data_out_debugaccess                                        : std_logic;                     -- workers:w_data_out_debugaccess -> mm_interconnect_0:workers_w_data_out_debugaccess
+	signal workers_w_data_out_address                                            : std_logic_vector(27 downto 0); -- workers:w_data_out_address -> mm_interconnect_0:workers_w_data_out_address
+	signal workers_w_data_out_read                                               : std_logic;                     -- workers:w_data_out_read -> mm_interconnect_0:workers_w_data_out_read
+	signal workers_w_data_out_byteenable                                         : std_logic_vector(3 downto 0);  -- workers:w_data_out_byteenable -> mm_interconnect_0:workers_w_data_out_byteenable
+	signal workers_w_data_out_readdatavalid                                      : std_logic;                     -- mm_interconnect_0:workers_w_data_out_readdatavalid -> workers:w_data_out_readdatavalid
+	signal workers_w_data_out_writedata                                          : std_logic_vector(31 downto 0); -- workers:w_data_out_writedata -> mm_interconnect_0:workers_w_data_out_writedata
+	signal workers_w_data_out_write                                              : std_logic;                     -- workers:w_data_out_write -> mm_interconnect_0:workers_w_data_out_write
+	signal workers_w_data_out_burstcount                                         : std_logic_vector(0 downto 0);  -- workers:w_data_out_burstcount -> mm_interconnect_0:workers_w_data_out_burstcount
 	signal mm_interconnect_0_manager_jtag_uart_avalon_jtag_slave_chipselect      : std_logic;                     -- mm_interconnect_0:manager_jtag_uart_avalon_jtag_slave_chipselect -> manager_jtag_uart:av_chipselect
 	signal mm_interconnect_0_manager_jtag_uart_avalon_jtag_slave_readdata        : std_logic_vector(31 downto 0); -- manager_jtag_uart:av_readdata -> mm_interconnect_0:manager_jtag_uart_avalon_jtag_slave_readdata
 	signal mm_interconnect_0_manager_jtag_uart_avalon_jtag_slave_waitrequest     : std_logic;                     -- manager_jtag_uart:av_waitrequest -> mm_interconnect_0:manager_jtag_uart_avalon_jtag_slave_waitrequest
@@ -511,11 +534,6 @@ architecture rtl of system is
 	signal mm_interconnect_0_ack_fifo_out_csr_read                               : std_logic;                     -- mm_interconnect_0:ack_fifo_out_csr_read -> ack_fifo:rdclk_control_slave_read
 	signal mm_interconnect_0_ack_fifo_out_csr_write                              : std_logic;                     -- mm_interconnect_0:ack_fifo_out_csr_write -> ack_fifo:rdclk_control_slave_write
 	signal mm_interconnect_0_ack_fifo_out_csr_writedata                          : std_logic_vector(31 downto 0); -- mm_interconnect_0:ack_fifo_out_csr_writedata -> ack_fifo:rdclk_control_slave_writedata
-	signal mm_interconnect_0_pll_0_pll_slave_readdata                            : std_logic_vector(31 downto 0); -- pll_0:readdata -> mm_interconnect_0:pll_0_pll_slave_readdata
-	signal mm_interconnect_0_pll_0_pll_slave_address                             : std_logic_vector(1 downto 0);  -- mm_interconnect_0:pll_0_pll_slave_address -> pll_0:address
-	signal mm_interconnect_0_pll_0_pll_slave_read                                : std_logic;                     -- mm_interconnect_0:pll_0_pll_slave_read -> pll_0:read
-	signal mm_interconnect_0_pll_0_pll_slave_write                               : std_logic;                     -- mm_interconnect_0:pll_0_pll_slave_write -> pll_0:write
-	signal mm_interconnect_0_pll_0_pll_slave_writedata                           : std_logic_vector(31 downto 0); -- mm_interconnect_0:pll_0_pll_slave_writedata -> pll_0:writedata
 	signal mm_interconnect_0_sdram_s1_chipselect                                 : std_logic;                     -- mm_interconnect_0:sdram_s1_chipselect -> sdram:az_cs
 	signal mm_interconnect_0_sdram_s1_readdata                                   : std_logic_vector(15 downto 0); -- sdram:za_data -> mm_interconnect_0:sdram_s1_readdata
 	signal mm_interconnect_0_sdram_s1_waitrequest                                : std_logic;                     -- sdram:za_waitrequest -> mm_interconnect_0:sdram_s1_waitrequest
@@ -558,7 +576,7 @@ architecture rtl of system is
 	signal rst_controller_reset_out_reset                                        : std_logic;                     -- rst_controller:reset_out -> [irq_mapper:reset, mm_interconnect_0:manager_reset_reset_bridge_in_reset_reset, mm_interconnect_0:workers_reset_reset_bridge_in_reset_reset, rst_controller_reset_out_reset:in, rst_translator:in_reset, shared_ocm:reset]
 	signal rst_controller_reset_out_reset_req                                    : std_logic;                     -- rst_controller:reset_req -> [manager:reset_req, rst_translator:reset_req_in, shared_ocm:reset_req]
 	signal manager_debug_reset_request_reset                                     : std_logic;                     -- manager:debug_reset_request -> [rst_controller:reset_in1, rst_controller_001:reset_in1, rst_controller_002:reset_in1]
-	signal rst_controller_001_reset_out_reset                                    : std_logic;                     -- rst_controller_001:reset_out -> [mm_interconnect_0:pll_0_inclk_interface_reset_reset_bridge_in_reset_reset, pll_0:reset]
+	signal rst_controller_001_reset_out_reset                                    : std_logic;                     -- rst_controller_001:reset_out -> pll:reset
 	signal rst_controller_002_reset_out_reset                                    : std_logic;                     -- rst_controller_002:reset_out -> rst_controller_002_reset_out_reset:in
 	signal reset_reset_n_ports_inv                                               : std_logic;                     -- reset_reset_n:inv -> [rst_controller:reset_in0, rst_controller_001:reset_in0, rst_controller_002:reset_in0]
 	signal mm_interconnect_0_manager_jtag_uart_avalon_jtag_slave_read_ports_inv  : std_logic;                     -- mm_interconnect_0_manager_jtag_uart_avalon_jtag_slave_read:inv -> manager_jtag_uart:av_read_n
@@ -573,9 +591,9 @@ begin
 
 	ack_fifo : component system_ack_fifo
 		port map (
-			wrclock                          => pll_0_c0_clk,                                 --    clk_in.clk
+			wrclock                          => pll_c0_clk,                                   --    clk_in.clk
 			wrreset_n                        => rst_controller_reset_out_reset_ports_inv,     --  reset_in.reset_n
-			rdclock                          => pll_0_c0_clk,                                 --   clk_out.clk
+			rdclock                          => pll_c0_clk,                                   --   clk_out.clk
 			rdreset_n                        => rst_controller_reset_out_reset_ports_inv,     -- reset_out.reset_n
 			avalonmm_write_slave_writedata   => mm_interconnect_0_ack_fifo_in_writedata,      --        in.writedata
 			avalonmm_write_slave_write       => mm_interconnect_0_ack_fifo_in_write,          --          .write
@@ -597,7 +615,7 @@ begin
 
 	manager : component system_manager
 		port map (
-			clk                                 => pll_0_c0_clk,                                          --                       clk.clk
+			clk                                 => pll_c0_clk,                                            --                       clk.clk
 			reset_n                             => rst_controller_reset_out_reset_ports_inv,              --                     reset.reset_n
 			reset_req                           => rst_controller_reset_out_reset_req,                    --                          .reset_req
 			d_address                           => manager_data_master_address,                           --               data_master.address
@@ -629,7 +647,7 @@ begin
 
 	manager_jtag_uart : component system_manager_jtag_uart
 		port map (
-			clk            => pll_0_c0_clk,                                                          --               clk.clk
+			clk            => pll_c0_clk,                                                            --               clk.clk
 			rst_n          => rst_controller_reset_out_reset_ports_inv,                              --             reset.reset_n
 			av_chipselect  => mm_interconnect_0_manager_jtag_uart_avalon_jtag_slave_chipselect,      -- avalon_jtag_slave.chipselect
 			av_address     => mm_interconnect_0_manager_jtag_uart_avalon_jtag_slave_address(0),      --                  .address
@@ -644,7 +662,7 @@ begin
 	mutex : component system_mutex
 		port map (
 			reset_n       => rst_controller_reset_out_reset_ports_inv, -- reset.reset_n
-			clk           => pll_0_c0_clk,                             --   clk.clk
+			clk           => pll_c0_clk,                               --   clk.clk
 			chipselect    => mm_interconnect_0_mutex_s1_chipselect,    --    s1.chipselect
 			data_from_cpu => mm_interconnect_0_mutex_s1_writedata,     --      .writedata
 			read          => mm_interconnect_0_mutex_s1_read,          --      .read
@@ -655,7 +673,7 @@ begin
 
 	pcu : component system_pcu
 		port map (
-			clk           => pll_0_c0_clk,                                      --           clk.clk
+			clk           => pll_c0_clk,                                        --           clk.clk
 			reset_n       => rst_controller_reset_out_reset_ports_inv,          --         reset.reset_n
 			address       => mm_interconnect_0_pcu_control_slave_address,       -- control_slave.address
 			begintransfer => mm_interconnect_0_pcu_control_slave_begintransfer, --              .begintransfer
@@ -664,34 +682,34 @@ begin
 			writedata     => mm_interconnect_0_pcu_control_slave_writedata      --              .writedata
 		);
 
-	pll_0 : component system_pll_0
+	pll : component system_pll
 		port map (
-			clk                => clk_clk,                                     --       inclk_interface.clk
-			reset              => rst_controller_001_reset_out_reset,          -- inclk_interface_reset.reset
-			read               => mm_interconnect_0_pll_0_pll_slave_read,      --             pll_slave.read
-			write              => mm_interconnect_0_pll_0_pll_slave_write,     --                      .write
-			address            => mm_interconnect_0_pll_0_pll_slave_address,   --                      .address
-			readdata           => mm_interconnect_0_pll_0_pll_slave_readdata,  --                      .readdata
-			writedata          => mm_interconnect_0_pll_0_pll_slave_writedata, --                      .writedata
-			c0                 => pll_0_c0_clk,                                --                    c0.clk
-			c1                 => sdram_clk_clk,                               --                    c1.clk
-			scandone           => open,                                        --           (terminated)
-			scandataout        => open,                                        --           (terminated)
-			areset             => '0',                                         --           (terminated)
-			locked             => open,                                        --           (terminated)
-			phasedone          => open,                                        --           (terminated)
-			phasecounterselect => "0000",                                      --           (terminated)
-			phaseupdown        => '0',                                         --           (terminated)
-			phasestep          => '0',                                         --           (terminated)
-			scanclk            => '0',                                         --           (terminated)
-			scanclkena         => '0',                                         --           (terminated)
-			scandata           => '0',                                         --           (terminated)
-			configupdate       => '0'                                          --           (terminated)
+			clk                => clk_clk,                            --       inclk_interface.clk
+			reset              => rst_controller_001_reset_out_reset, -- inclk_interface_reset.reset
+			read               => open,                               --             pll_slave.read
+			write              => open,                               --                      .write
+			address            => open,                               --                      .address
+			readdata           => open,                               --                      .readdata
+			writedata          => open,                               --                      .writedata
+			c0                 => pll_c0_clk,                         --                    c0.clk
+			c1                 => sdram_clk_clk,                      --                    c1.clk
+			areset             => open,                               --        areset_conduit.export
+			scandone           => open,                               --           (terminated)
+			scandataout        => open,                               --           (terminated)
+			locked             => open,                               --           (terminated)
+			phasedone          => open,                               --           (terminated)
+			phasecounterselect => "0000",                             --           (terminated)
+			phaseupdown        => '0',                                --           (terminated)
+			phasestep          => '0',                                --           (terminated)
+			scanclk            => '0',                                --           (terminated)
+			scanclkena         => '0',                                --           (terminated)
+			scandata           => '0',                                --           (terminated)
+			configupdate       => '0'                                 --           (terminated)
 		);
 
 	sdram : component system_sdram
 		port map (
-			clk            => pll_0_c0_clk,                                    --   clk.clk
+			clk            => pll_c0_clk,                                      --   clk.clk
 			reset_n        => rst_controller_reset_out_reset_ports_inv,        -- reset.reset_n
 			az_addr        => mm_interconnect_0_sdram_s1_address,              --    s1.address
 			az_be_n        => mm_interconnect_0_sdram_s1_byteenable_ports_inv, --      .byteenable_n
@@ -729,7 +747,7 @@ begin
 			readdata2   => mm_interconnect_0_shared_ocm_s2_readdata,   --       .readdata
 			writedata2  => mm_interconnect_0_shared_ocm_s2_writedata,  --       .writedata
 			byteenable2 => mm_interconnect_0_shared_ocm_s2_byteenable, --       .byteenable
-			clk         => pll_0_c0_clk,                               --   clk1.clk
+			clk         => pll_c0_clk,                                 --   clk1.clk
 			reset       => rst_controller_reset_out_reset,             -- reset1.reset
 			reset_req   => rst_controller_reset_out_reset_req,         --       .reset_req
 			freeze      => '0'                                         -- (terminated)
@@ -737,126 +755,139 @@ begin
 
 	workers : component system_workers
 		port map (
-			clk_clk            => pll_0_c0_clk,                                 --   clk.clk
-			reset_reset_n      => rst_controller_002_reset_out_reset_ports_inv, -- reset.reset_n
-			wout_waitrequest   => workers_wout_waitrequest,                     --  wout.waitrequest
-			wout_readdata      => workers_wout_readdata,                        --      .readdata
-			wout_readdatavalid => workers_wout_readdatavalid,                   --      .readdatavalid
-			wout_burstcount    => workers_wout_burstcount,                      --      .burstcount
-			wout_writedata     => workers_wout_writedata,                       --      .writedata
-			wout_address       => workers_wout_address,                         --      .address
-			wout_write         => workers_wout_write,                           --      .write
-			wout_read          => workers_wout_read,                            --      .read
-			wout_byteenable    => workers_wout_byteenable,                      --      .byteenable
-			wout_debugaccess   => workers_wout_debugaccess                      --      .debugaccess
+			clk_clk                  => pll_c0_clk,                                   --        clk.clk
+			reset_reset_n            => rst_controller_002_reset_out_reset_ports_inv, --      reset.reset_n
+			w_all_out_waitrequest    => workers_w_all_out_waitrequest,                --  w_all_out.waitrequest
+			w_all_out_readdata       => workers_w_all_out_readdata,                   --           .readdata
+			w_all_out_readdatavalid  => workers_w_all_out_readdatavalid,              --           .readdatavalid
+			w_all_out_burstcount     => workers_w_all_out_burstcount,                 --           .burstcount
+			w_all_out_writedata      => workers_w_all_out_writedata,                  --           .writedata
+			w_all_out_address        => workers_w_all_out_address,                    --           .address
+			w_all_out_write          => workers_w_all_out_write,                      --           .write
+			w_all_out_read           => workers_w_all_out_read,                       --           .read
+			w_all_out_byteenable     => workers_w_all_out_byteenable,                 --           .byteenable
+			w_all_out_debugaccess    => workers_w_all_out_debugaccess,                --           .debugaccess
+			w_data_out_waitrequest   => workers_w_data_out_waitrequest,               -- w_data_out.waitrequest
+			w_data_out_readdata      => workers_w_data_out_readdata,                  --           .readdata
+			w_data_out_readdatavalid => workers_w_data_out_readdatavalid,             --           .readdatavalid
+			w_data_out_burstcount    => workers_w_data_out_burstcount,                --           .burstcount
+			w_data_out_writedata     => workers_w_data_out_writedata,                 --           .writedata
+			w_data_out_address       => workers_w_data_out_address,                   --           .address
+			w_data_out_write         => workers_w_data_out_write,                     --           .write
+			w_data_out_read          => workers_w_data_out_read,                      --           .read
+			w_data_out_byteenable    => workers_w_data_out_byteenable,                --           .byteenable
+			w_data_out_debugaccess   => workers_w_data_out_debugaccess                --           .debugaccess
 		);
 
 	mm_interconnect_0 : component system_mm_interconnect_0
 		port map (
-			clk_0_clk_clk                                           => clk_clk,                                                           --                                         clk_0_clk.clk
-			pll_0_c0_clk                                            => pll_0_c0_clk,                                                      --                                          pll_0_c0.clk
-			manager_reset_reset_bridge_in_reset_reset               => rst_controller_reset_out_reset,                                    --               manager_reset_reset_bridge_in_reset.reset
-			pll_0_inclk_interface_reset_reset_bridge_in_reset_reset => rst_controller_001_reset_out_reset,                                -- pll_0_inclk_interface_reset_reset_bridge_in_reset.reset
-			workers_reset_reset_bridge_in_reset_reset               => rst_controller_reset_out_reset,                                    --               workers_reset_reset_bridge_in_reset.reset
-			manager_data_master_address                             => manager_data_master_address,                                       --                               manager_data_master.address
-			manager_data_master_waitrequest                         => manager_data_master_waitrequest,                                   --                                                  .waitrequest
-			manager_data_master_byteenable                          => manager_data_master_byteenable,                                    --                                                  .byteenable
-			manager_data_master_read                                => manager_data_master_read,                                          --                                                  .read
-			manager_data_master_readdata                            => manager_data_master_readdata,                                      --                                                  .readdata
-			manager_data_master_readdatavalid                       => manager_data_master_readdatavalid,                                 --                                                  .readdatavalid
-			manager_data_master_write                               => manager_data_master_write,                                         --                                                  .write
-			manager_data_master_writedata                           => manager_data_master_writedata,                                     --                                                  .writedata
-			manager_data_master_debugaccess                         => manager_data_master_debugaccess,                                   --                                                  .debugaccess
-			manager_instruction_master_address                      => manager_instruction_master_address,                                --                        manager_instruction_master.address
-			manager_instruction_master_waitrequest                  => manager_instruction_master_waitrequest,                            --                                                  .waitrequest
-			manager_instruction_master_read                         => manager_instruction_master_read,                                   --                                                  .read
-			manager_instruction_master_readdata                     => manager_instruction_master_readdata,                               --                                                  .readdata
-			manager_instruction_master_readdatavalid                => manager_instruction_master_readdatavalid,                          --                                                  .readdatavalid
-			workers_wout_address                                    => workers_wout_address,                                              --                                      workers_wout.address
-			workers_wout_waitrequest                                => workers_wout_waitrequest,                                          --                                                  .waitrequest
-			workers_wout_burstcount                                 => workers_wout_burstcount,                                           --                                                  .burstcount
-			workers_wout_byteenable                                 => workers_wout_byteenable,                                           --                                                  .byteenable
-			workers_wout_read                                       => workers_wout_read,                                                 --                                                  .read
-			workers_wout_readdata                                   => workers_wout_readdata,                                             --                                                  .readdata
-			workers_wout_readdatavalid                              => workers_wout_readdatavalid,                                        --                                                  .readdatavalid
-			workers_wout_write                                      => workers_wout_write,                                                --                                                  .write
-			workers_wout_writedata                                  => workers_wout_writedata,                                            --                                                  .writedata
-			workers_wout_debugaccess                                => workers_wout_debugaccess,                                          --                                                  .debugaccess
-			ack_fifo_in_write                                       => mm_interconnect_0_ack_fifo_in_write,                               --                                       ack_fifo_in.write
-			ack_fifo_in_writedata                                   => mm_interconnect_0_ack_fifo_in_writedata,                           --                                                  .writedata
-			ack_fifo_in_waitrequest                                 => mm_interconnect_0_ack_fifo_in_waitrequest,                         --                                                  .waitrequest
-			ack_fifo_in_csr_address                                 => mm_interconnect_0_ack_fifo_in_csr_address,                         --                                   ack_fifo_in_csr.address
-			ack_fifo_in_csr_write                                   => mm_interconnect_0_ack_fifo_in_csr_write,                           --                                                  .write
-			ack_fifo_in_csr_read                                    => mm_interconnect_0_ack_fifo_in_csr_read,                            --                                                  .read
-			ack_fifo_in_csr_readdata                                => mm_interconnect_0_ack_fifo_in_csr_readdata,                        --                                                  .readdata
-			ack_fifo_in_csr_writedata                               => mm_interconnect_0_ack_fifo_in_csr_writedata,                       --                                                  .writedata
-			ack_fifo_out_read                                       => mm_interconnect_0_ack_fifo_out_read,                               --                                      ack_fifo_out.read
-			ack_fifo_out_readdata                                   => mm_interconnect_0_ack_fifo_out_readdata,                           --                                                  .readdata
-			ack_fifo_out_waitrequest                                => mm_interconnect_0_ack_fifo_out_waitrequest,                        --                                                  .waitrequest
-			ack_fifo_out_csr_address                                => mm_interconnect_0_ack_fifo_out_csr_address,                        --                                  ack_fifo_out_csr.address
-			ack_fifo_out_csr_write                                  => mm_interconnect_0_ack_fifo_out_csr_write,                          --                                                  .write
-			ack_fifo_out_csr_read                                   => mm_interconnect_0_ack_fifo_out_csr_read,                           --                                                  .read
-			ack_fifo_out_csr_readdata                               => mm_interconnect_0_ack_fifo_out_csr_readdata,                       --                                                  .readdata
-			ack_fifo_out_csr_writedata                              => mm_interconnect_0_ack_fifo_out_csr_writedata,                      --                                                  .writedata
-			manager_debug_mem_slave_address                         => mm_interconnect_0_manager_debug_mem_slave_address,                 --                           manager_debug_mem_slave.address
-			manager_debug_mem_slave_write                           => mm_interconnect_0_manager_debug_mem_slave_write,                   --                                                  .write
-			manager_debug_mem_slave_read                            => mm_interconnect_0_manager_debug_mem_slave_read,                    --                                                  .read
-			manager_debug_mem_slave_readdata                        => mm_interconnect_0_manager_debug_mem_slave_readdata,                --                                                  .readdata
-			manager_debug_mem_slave_writedata                       => mm_interconnect_0_manager_debug_mem_slave_writedata,               --                                                  .writedata
-			manager_debug_mem_slave_byteenable                      => mm_interconnect_0_manager_debug_mem_slave_byteenable,              --                                                  .byteenable
-			manager_debug_mem_slave_waitrequest                     => mm_interconnect_0_manager_debug_mem_slave_waitrequest,             --                                                  .waitrequest
-			manager_debug_mem_slave_debugaccess                     => mm_interconnect_0_manager_debug_mem_slave_debugaccess,             --                                                  .debugaccess
-			manager_jtag_uart_avalon_jtag_slave_address             => mm_interconnect_0_manager_jtag_uart_avalon_jtag_slave_address,     --               manager_jtag_uart_avalon_jtag_slave.address
-			manager_jtag_uart_avalon_jtag_slave_write               => mm_interconnect_0_manager_jtag_uart_avalon_jtag_slave_write,       --                                                  .write
-			manager_jtag_uart_avalon_jtag_slave_read                => mm_interconnect_0_manager_jtag_uart_avalon_jtag_slave_read,        --                                                  .read
-			manager_jtag_uart_avalon_jtag_slave_readdata            => mm_interconnect_0_manager_jtag_uart_avalon_jtag_slave_readdata,    --                                                  .readdata
-			manager_jtag_uart_avalon_jtag_slave_writedata           => mm_interconnect_0_manager_jtag_uart_avalon_jtag_slave_writedata,   --                                                  .writedata
-			manager_jtag_uart_avalon_jtag_slave_waitrequest         => mm_interconnect_0_manager_jtag_uart_avalon_jtag_slave_waitrequest, --                                                  .waitrequest
-			manager_jtag_uart_avalon_jtag_slave_chipselect          => mm_interconnect_0_manager_jtag_uart_avalon_jtag_slave_chipselect,  --                                                  .chipselect
-			mutex_s1_address                                        => mm_interconnect_0_mutex_s1_address,                                --                                          mutex_s1.address
-			mutex_s1_write                                          => mm_interconnect_0_mutex_s1_write,                                  --                                                  .write
-			mutex_s1_read                                           => mm_interconnect_0_mutex_s1_read,                                   --                                                  .read
-			mutex_s1_readdata                                       => mm_interconnect_0_mutex_s1_readdata,                               --                                                  .readdata
-			mutex_s1_writedata                                      => mm_interconnect_0_mutex_s1_writedata,                              --                                                  .writedata
-			mutex_s1_chipselect                                     => mm_interconnect_0_mutex_s1_chipselect,                             --                                                  .chipselect
-			pcu_control_slave_address                               => mm_interconnect_0_pcu_control_slave_address,                       --                                 pcu_control_slave.address
-			pcu_control_slave_write                                 => mm_interconnect_0_pcu_control_slave_write,                         --                                                  .write
-			pcu_control_slave_readdata                              => mm_interconnect_0_pcu_control_slave_readdata,                      --                                                  .readdata
-			pcu_control_slave_writedata                             => mm_interconnect_0_pcu_control_slave_writedata,                     --                                                  .writedata
-			pcu_control_slave_begintransfer                         => mm_interconnect_0_pcu_control_slave_begintransfer,                 --                                                  .begintransfer
-			pll_0_pll_slave_address                                 => mm_interconnect_0_pll_0_pll_slave_address,                         --                                   pll_0_pll_slave.address
-			pll_0_pll_slave_write                                   => mm_interconnect_0_pll_0_pll_slave_write,                           --                                                  .write
-			pll_0_pll_slave_read                                    => mm_interconnect_0_pll_0_pll_slave_read,                            --                                                  .read
-			pll_0_pll_slave_readdata                                => mm_interconnect_0_pll_0_pll_slave_readdata,                        --                                                  .readdata
-			pll_0_pll_slave_writedata                               => mm_interconnect_0_pll_0_pll_slave_writedata,                       --                                                  .writedata
-			sdram_s1_address                                        => mm_interconnect_0_sdram_s1_address,                                --                                          sdram_s1.address
-			sdram_s1_write                                          => mm_interconnect_0_sdram_s1_write,                                  --                                                  .write
-			sdram_s1_read                                           => mm_interconnect_0_sdram_s1_read,                                   --                                                  .read
-			sdram_s1_readdata                                       => mm_interconnect_0_sdram_s1_readdata,                               --                                                  .readdata
-			sdram_s1_writedata                                      => mm_interconnect_0_sdram_s1_writedata,                              --                                                  .writedata
-			sdram_s1_byteenable                                     => mm_interconnect_0_sdram_s1_byteenable,                             --                                                  .byteenable
-			sdram_s1_readdatavalid                                  => mm_interconnect_0_sdram_s1_readdatavalid,                          --                                                  .readdatavalid
-			sdram_s1_waitrequest                                    => mm_interconnect_0_sdram_s1_waitrequest,                            --                                                  .waitrequest
-			sdram_s1_chipselect                                     => mm_interconnect_0_sdram_s1_chipselect,                             --                                                  .chipselect
-			shared_ocm_s1_address                                   => mm_interconnect_0_shared_ocm_s1_address,                           --                                     shared_ocm_s1.address
-			shared_ocm_s1_write                                     => mm_interconnect_0_shared_ocm_s1_write,                             --                                                  .write
-			shared_ocm_s1_readdata                                  => mm_interconnect_0_shared_ocm_s1_readdata,                          --                                                  .readdata
-			shared_ocm_s1_writedata                                 => mm_interconnect_0_shared_ocm_s1_writedata,                         --                                                  .writedata
-			shared_ocm_s1_byteenable                                => mm_interconnect_0_shared_ocm_s1_byteenable,                        --                                                  .byteenable
-			shared_ocm_s1_chipselect                                => mm_interconnect_0_shared_ocm_s1_chipselect,                        --                                                  .chipselect
-			shared_ocm_s1_clken                                     => mm_interconnect_0_shared_ocm_s1_clken,                             --                                                  .clken
-			shared_ocm_s2_address                                   => mm_interconnect_0_shared_ocm_s2_address,                           --                                     shared_ocm_s2.address
-			shared_ocm_s2_write                                     => mm_interconnect_0_shared_ocm_s2_write,                             --                                                  .write
-			shared_ocm_s2_readdata                                  => mm_interconnect_0_shared_ocm_s2_readdata,                          --                                                  .readdata
-			shared_ocm_s2_writedata                                 => mm_interconnect_0_shared_ocm_s2_writedata,                         --                                                  .writedata
-			shared_ocm_s2_byteenable                                => mm_interconnect_0_shared_ocm_s2_byteenable,                        --                                                  .byteenable
-			shared_ocm_s2_chipselect                                => mm_interconnect_0_shared_ocm_s2_chipselect,                        --                                                  .chipselect
-			shared_ocm_s2_clken                                     => mm_interconnect_0_shared_ocm_s2_clken                              --                                                  .clken
+			pll_c0_clk                                      => pll_c0_clk,                                                        --                              pll_c0.clk
+			manager_reset_reset_bridge_in_reset_reset       => rst_controller_reset_out_reset,                                    -- manager_reset_reset_bridge_in_reset.reset
+			workers_reset_reset_bridge_in_reset_reset       => rst_controller_reset_out_reset,                                    -- workers_reset_reset_bridge_in_reset.reset
+			manager_data_master_address                     => manager_data_master_address,                                       --                 manager_data_master.address
+			manager_data_master_waitrequest                 => manager_data_master_waitrequest,                                   --                                    .waitrequest
+			manager_data_master_byteenable                  => manager_data_master_byteenable,                                    --                                    .byteenable
+			manager_data_master_read                        => manager_data_master_read,                                          --                                    .read
+			manager_data_master_readdata                    => manager_data_master_readdata,                                      --                                    .readdata
+			manager_data_master_readdatavalid               => manager_data_master_readdatavalid,                                 --                                    .readdatavalid
+			manager_data_master_write                       => manager_data_master_write,                                         --                                    .write
+			manager_data_master_writedata                   => manager_data_master_writedata,                                     --                                    .writedata
+			manager_data_master_debugaccess                 => manager_data_master_debugaccess,                                   --                                    .debugaccess
+			manager_instruction_master_address              => manager_instruction_master_address,                                --          manager_instruction_master.address
+			manager_instruction_master_waitrequest          => manager_instruction_master_waitrequest,                            --                                    .waitrequest
+			manager_instruction_master_read                 => manager_instruction_master_read,                                   --                                    .read
+			manager_instruction_master_readdata             => manager_instruction_master_readdata,                               --                                    .readdata
+			manager_instruction_master_readdatavalid        => manager_instruction_master_readdatavalid,                          --                                    .readdatavalid
+			workers_w_all_out_address                       => workers_w_all_out_address,                                         --                   workers_w_all_out.address
+			workers_w_all_out_waitrequest                   => workers_w_all_out_waitrequest,                                     --                                    .waitrequest
+			workers_w_all_out_burstcount                    => workers_w_all_out_burstcount,                                      --                                    .burstcount
+			workers_w_all_out_byteenable                    => workers_w_all_out_byteenable,                                      --                                    .byteenable
+			workers_w_all_out_read                          => workers_w_all_out_read,                                            --                                    .read
+			workers_w_all_out_readdata                      => workers_w_all_out_readdata,                                        --                                    .readdata
+			workers_w_all_out_readdatavalid                 => workers_w_all_out_readdatavalid,                                   --                                    .readdatavalid
+			workers_w_all_out_write                         => workers_w_all_out_write,                                           --                                    .write
+			workers_w_all_out_writedata                     => workers_w_all_out_writedata,                                       --                                    .writedata
+			workers_w_all_out_debugaccess                   => workers_w_all_out_debugaccess,                                     --                                    .debugaccess
+			workers_w_data_out_address                      => workers_w_data_out_address,                                        --                  workers_w_data_out.address
+			workers_w_data_out_waitrequest                  => workers_w_data_out_waitrequest,                                    --                                    .waitrequest
+			workers_w_data_out_burstcount                   => workers_w_data_out_burstcount,                                     --                                    .burstcount
+			workers_w_data_out_byteenable                   => workers_w_data_out_byteenable,                                     --                                    .byteenable
+			workers_w_data_out_read                         => workers_w_data_out_read,                                           --                                    .read
+			workers_w_data_out_readdata                     => workers_w_data_out_readdata,                                       --                                    .readdata
+			workers_w_data_out_readdatavalid                => workers_w_data_out_readdatavalid,                                  --                                    .readdatavalid
+			workers_w_data_out_write                        => workers_w_data_out_write,                                          --                                    .write
+			workers_w_data_out_writedata                    => workers_w_data_out_writedata,                                      --                                    .writedata
+			workers_w_data_out_debugaccess                  => workers_w_data_out_debugaccess,                                    --                                    .debugaccess
+			ack_fifo_in_write                               => mm_interconnect_0_ack_fifo_in_write,                               --                         ack_fifo_in.write
+			ack_fifo_in_writedata                           => mm_interconnect_0_ack_fifo_in_writedata,                           --                                    .writedata
+			ack_fifo_in_waitrequest                         => mm_interconnect_0_ack_fifo_in_waitrequest,                         --                                    .waitrequest
+			ack_fifo_in_csr_address                         => mm_interconnect_0_ack_fifo_in_csr_address,                         --                     ack_fifo_in_csr.address
+			ack_fifo_in_csr_write                           => mm_interconnect_0_ack_fifo_in_csr_write,                           --                                    .write
+			ack_fifo_in_csr_read                            => mm_interconnect_0_ack_fifo_in_csr_read,                            --                                    .read
+			ack_fifo_in_csr_readdata                        => mm_interconnect_0_ack_fifo_in_csr_readdata,                        --                                    .readdata
+			ack_fifo_in_csr_writedata                       => mm_interconnect_0_ack_fifo_in_csr_writedata,                       --                                    .writedata
+			ack_fifo_out_read                               => mm_interconnect_0_ack_fifo_out_read,                               --                        ack_fifo_out.read
+			ack_fifo_out_readdata                           => mm_interconnect_0_ack_fifo_out_readdata,                           --                                    .readdata
+			ack_fifo_out_waitrequest                        => mm_interconnect_0_ack_fifo_out_waitrequest,                        --                                    .waitrequest
+			ack_fifo_out_csr_address                        => mm_interconnect_0_ack_fifo_out_csr_address,                        --                    ack_fifo_out_csr.address
+			ack_fifo_out_csr_write                          => mm_interconnect_0_ack_fifo_out_csr_write,                          --                                    .write
+			ack_fifo_out_csr_read                           => mm_interconnect_0_ack_fifo_out_csr_read,                           --                                    .read
+			ack_fifo_out_csr_readdata                       => mm_interconnect_0_ack_fifo_out_csr_readdata,                       --                                    .readdata
+			ack_fifo_out_csr_writedata                      => mm_interconnect_0_ack_fifo_out_csr_writedata,                      --                                    .writedata
+			manager_debug_mem_slave_address                 => mm_interconnect_0_manager_debug_mem_slave_address,                 --             manager_debug_mem_slave.address
+			manager_debug_mem_slave_write                   => mm_interconnect_0_manager_debug_mem_slave_write,                   --                                    .write
+			manager_debug_mem_slave_read                    => mm_interconnect_0_manager_debug_mem_slave_read,                    --                                    .read
+			manager_debug_mem_slave_readdata                => mm_interconnect_0_manager_debug_mem_slave_readdata,                --                                    .readdata
+			manager_debug_mem_slave_writedata               => mm_interconnect_0_manager_debug_mem_slave_writedata,               --                                    .writedata
+			manager_debug_mem_slave_byteenable              => mm_interconnect_0_manager_debug_mem_slave_byteenable,              --                                    .byteenable
+			manager_debug_mem_slave_waitrequest             => mm_interconnect_0_manager_debug_mem_slave_waitrequest,             --                                    .waitrequest
+			manager_debug_mem_slave_debugaccess             => mm_interconnect_0_manager_debug_mem_slave_debugaccess,             --                                    .debugaccess
+			manager_jtag_uart_avalon_jtag_slave_address     => mm_interconnect_0_manager_jtag_uart_avalon_jtag_slave_address,     -- manager_jtag_uart_avalon_jtag_slave.address
+			manager_jtag_uart_avalon_jtag_slave_write       => mm_interconnect_0_manager_jtag_uart_avalon_jtag_slave_write,       --                                    .write
+			manager_jtag_uart_avalon_jtag_slave_read        => mm_interconnect_0_manager_jtag_uart_avalon_jtag_slave_read,        --                                    .read
+			manager_jtag_uart_avalon_jtag_slave_readdata    => mm_interconnect_0_manager_jtag_uart_avalon_jtag_slave_readdata,    --                                    .readdata
+			manager_jtag_uart_avalon_jtag_slave_writedata   => mm_interconnect_0_manager_jtag_uart_avalon_jtag_slave_writedata,   --                                    .writedata
+			manager_jtag_uart_avalon_jtag_slave_waitrequest => mm_interconnect_0_manager_jtag_uart_avalon_jtag_slave_waitrequest, --                                    .waitrequest
+			manager_jtag_uart_avalon_jtag_slave_chipselect  => mm_interconnect_0_manager_jtag_uart_avalon_jtag_slave_chipselect,  --                                    .chipselect
+			mutex_s1_address                                => mm_interconnect_0_mutex_s1_address,                                --                            mutex_s1.address
+			mutex_s1_write                                  => mm_interconnect_0_mutex_s1_write,                                  --                                    .write
+			mutex_s1_read                                   => mm_interconnect_0_mutex_s1_read,                                   --                                    .read
+			mutex_s1_readdata                               => mm_interconnect_0_mutex_s1_readdata,                               --                                    .readdata
+			mutex_s1_writedata                              => mm_interconnect_0_mutex_s1_writedata,                              --                                    .writedata
+			mutex_s1_chipselect                             => mm_interconnect_0_mutex_s1_chipselect,                             --                                    .chipselect
+			pcu_control_slave_address                       => mm_interconnect_0_pcu_control_slave_address,                       --                   pcu_control_slave.address
+			pcu_control_slave_write                         => mm_interconnect_0_pcu_control_slave_write,                         --                                    .write
+			pcu_control_slave_readdata                      => mm_interconnect_0_pcu_control_slave_readdata,                      --                                    .readdata
+			pcu_control_slave_writedata                     => mm_interconnect_0_pcu_control_slave_writedata,                     --                                    .writedata
+			pcu_control_slave_begintransfer                 => mm_interconnect_0_pcu_control_slave_begintransfer,                 --                                    .begintransfer
+			sdram_s1_address                                => mm_interconnect_0_sdram_s1_address,                                --                            sdram_s1.address
+			sdram_s1_write                                  => mm_interconnect_0_sdram_s1_write,                                  --                                    .write
+			sdram_s1_read                                   => mm_interconnect_0_sdram_s1_read,                                   --                                    .read
+			sdram_s1_readdata                               => mm_interconnect_0_sdram_s1_readdata,                               --                                    .readdata
+			sdram_s1_writedata                              => mm_interconnect_0_sdram_s1_writedata,                              --                                    .writedata
+			sdram_s1_byteenable                             => mm_interconnect_0_sdram_s1_byteenable,                             --                                    .byteenable
+			sdram_s1_readdatavalid                          => mm_interconnect_0_sdram_s1_readdatavalid,                          --                                    .readdatavalid
+			sdram_s1_waitrequest                            => mm_interconnect_0_sdram_s1_waitrequest,                            --                                    .waitrequest
+			sdram_s1_chipselect                             => mm_interconnect_0_sdram_s1_chipselect,                             --                                    .chipselect
+			shared_ocm_s1_address                           => mm_interconnect_0_shared_ocm_s1_address,                           --                       shared_ocm_s1.address
+			shared_ocm_s1_write                             => mm_interconnect_0_shared_ocm_s1_write,                             --                                    .write
+			shared_ocm_s1_readdata                          => mm_interconnect_0_shared_ocm_s1_readdata,                          --                                    .readdata
+			shared_ocm_s1_writedata                         => mm_interconnect_0_shared_ocm_s1_writedata,                         --                                    .writedata
+			shared_ocm_s1_byteenable                        => mm_interconnect_0_shared_ocm_s1_byteenable,                        --                                    .byteenable
+			shared_ocm_s1_chipselect                        => mm_interconnect_0_shared_ocm_s1_chipselect,                        --                                    .chipselect
+			shared_ocm_s1_clken                             => mm_interconnect_0_shared_ocm_s1_clken,                             --                                    .clken
+			shared_ocm_s2_address                           => mm_interconnect_0_shared_ocm_s2_address,                           --                       shared_ocm_s2.address
+			shared_ocm_s2_write                             => mm_interconnect_0_shared_ocm_s2_write,                             --                                    .write
+			shared_ocm_s2_readdata                          => mm_interconnect_0_shared_ocm_s2_readdata,                          --                                    .readdata
+			shared_ocm_s2_writedata                         => mm_interconnect_0_shared_ocm_s2_writedata,                         --                                    .writedata
+			shared_ocm_s2_byteenable                        => mm_interconnect_0_shared_ocm_s2_byteenable,                        --                                    .byteenable
+			shared_ocm_s2_chipselect                        => mm_interconnect_0_shared_ocm_s2_chipselect,                        --                                    .chipselect
+			shared_ocm_s2_clken                             => mm_interconnect_0_shared_ocm_s2_clken                              --                                    .clken
 		);
 
 	irq_mapper : component system_irq_mapper
 		port map (
-			clk           => pll_0_c0_clk,                   --       clk.clk
+			clk           => pll_c0_clk,                     --       clk.clk
 			reset         => rst_controller_reset_out_reset, -- clk_reset.reset
 			receiver0_irq => irq_mapper_receiver0_irq,       -- receiver0.irq
 			sender_irq    => manager_irq_irq                 --    sender.irq
@@ -892,7 +923,7 @@ begin
 		port map (
 			reset_in0      => reset_reset_n_ports_inv,            -- reset_in0.reset
 			reset_in1      => manager_debug_reset_request_reset,  -- reset_in1.reset
-			clk            => pll_0_c0_clk,                       --       clk.clk
+			clk            => pll_c0_clk,                         --       clk.clk
 			reset_out      => rst_controller_reset_out_reset,     -- reset_out.reset
 			reset_req      => rst_controller_reset_out_reset_req, --          .reset_req
 			reset_req_in0  => '0',                                -- (terminated)

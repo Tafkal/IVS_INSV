@@ -44,15 +44,15 @@
 
 module system_mm_interconnect_0_router_default_decode
   #(
-     parameter DEFAULT_CHANNEL = 6,
+     parameter DEFAULT_CHANNEL = 5,
                DEFAULT_WR_CHANNEL = -1,
                DEFAULT_RD_CHANNEL = -1,
-               DEFAULT_DESTID = 9 
+               DEFAULT_DESTID = 8 
    )
   (output [92 - 89 : 0] default_destination_id,
-   output [12-1 : 0] default_wr_channel,
-   output [12-1 : 0] default_rd_channel,
-   output [12-1 : 0] default_src_channel
+   output [11-1 : 0] default_wr_channel,
+   output [11-1 : 0] default_rd_channel,
+   output [11-1 : 0] default_src_channel
   );
 
   assign default_destination_id = 
@@ -63,7 +63,7 @@ module system_mm_interconnect_0_router_default_decode
       assign default_src_channel = '0;
     end
     else begin : default_channel_assignment
-      assign default_src_channel = 12'b1 << DEFAULT_CHANNEL;
+      assign default_src_channel = 11'b1 << DEFAULT_CHANNEL;
     end
   endgenerate
 
@@ -73,8 +73,8 @@ module system_mm_interconnect_0_router_default_decode
       assign default_rd_channel = '0;
     end
     else begin : default_rw_channel_assignment
-      assign default_wr_channel = 12'b1 << DEFAULT_WR_CHANNEL;
-      assign default_rd_channel = 12'b1 << DEFAULT_RD_CHANNEL;
+      assign default_wr_channel = 11'b1 << DEFAULT_WR_CHANNEL;
+      assign default_rd_channel = 11'b1 << DEFAULT_RD_CHANNEL;
     end
   endgenerate
 
@@ -103,7 +103,7 @@ module system_mm_interconnect_0_router
     // -------------------
     output                          src_valid,
     output reg [106-1    : 0] src_data,
-    output reg [12-1 : 0] src_channel,
+    output reg [11-1 : 0] src_channel,
     output                          src_startofpacket,
     output                          src_endofpacket,
     input                           src_ready
@@ -119,7 +119,7 @@ module system_mm_interconnect_0_router
     localparam PKT_PROTECTION_H = 96;
     localparam PKT_PROTECTION_L = 94;
     localparam ST_DATA_W = 106;
-    localparam ST_CHANNEL_W = 12;
+    localparam ST_CHANNEL_W = 11;
     localparam DECODER_TYPE = 0;
 
     localparam PKT_TRANS_WRITE = 66;
@@ -138,11 +138,10 @@ module system_mm_interconnect_0_router
     localparam PAD1 = log2ceil(64'h1400 - 64'h1000); 
     localparam PAD2 = log2ceil(64'h1420 - 64'h1400); 
     localparam PAD3 = log2ceil(64'h1440 - 64'h1420); 
-    localparam PAD4 = log2ceil(64'h1450 - 64'h1440); 
-    localparam PAD5 = log2ceil(64'h1460 - 64'h1458); 
-    localparam PAD6 = log2ceil(64'h1468 - 64'h1460); 
-    localparam PAD7 = log2ceil(64'h146c - 64'h1468); 
-    localparam PAD8 = log2ceil(64'h6000000 - 64'h4000000); 
+    localparam PAD4 = log2ceil(64'h1450 - 64'h1448); 
+    localparam PAD5 = log2ceil(64'h1458 - 64'h1450); 
+    localparam PAD6 = log2ceil(64'h145c - 64'h1458); 
+    localparam PAD7 = log2ceil(64'h6000000 - 64'h4000000); 
     // -------------------------------------------------------
     // Work out which address bits are significant based on the
     // address range of the slaves. If the required width is too
@@ -172,7 +171,7 @@ module system_mm_interconnect_0_router
     assign src_startofpacket = sink_startofpacket;
     assign src_endofpacket   = sink_endofpacket;
     wire [PKT_DEST_ID_W-1:0] default_destid;
-    wire [12-1 : 0] default_src_channel;
+    wire [11-1 : 0] default_src_channel;
 
 
 
@@ -203,56 +202,50 @@ module system_mm_interconnect_0_router
 
     // ( 0x800 .. 0x1000 )
     if ( {address[RG:PAD0],{PAD0{1'b0}}} == 27'h800   ) begin
-            src_channel = 12'b000000100;
+            src_channel = 11'b00000100;
             src_data[PKT_DEST_ID_H:PKT_DEST_ID_L] = 4;
     end
 
     // ( 0x1000 .. 0x1400 )
     if ( {address[RG:PAD1],{PAD1{1'b0}}} == 27'h1000   ) begin
-            src_channel = 12'b010000000;
-            src_data[PKT_DEST_ID_H:PKT_DEST_ID_L] = 10;
+            src_channel = 11'b01000000;
+            src_data[PKT_DEST_ID_H:PKT_DEST_ID_L] = 9;
     end
 
     // ( 0x1400 .. 0x1420 )
     if ( {address[RG:PAD2],{PAD2{1'b0}}} == 27'h1400   ) begin
-            src_channel = 12'b000010000;
+            src_channel = 11'b00010000;
             src_data[PKT_DEST_ID_H:PKT_DEST_ID_L] = 2;
     end
 
     // ( 0x1420 .. 0x1440 )
     if ( {address[RG:PAD3],{PAD3{1'b0}}} == 27'h1420   ) begin
-            src_channel = 12'b000000010;
+            src_channel = 11'b00000010;
             src_data[PKT_DEST_ID_H:PKT_DEST_ID_L] = 7;
     end
 
-    // ( 0x1440 .. 0x1450 )
-    if ( {address[RG:PAD4],{PAD4{1'b0}}} == 27'h1440   ) begin
-            src_channel = 12'b000100000;
-            src_data[PKT_DEST_ID_H:PKT_DEST_ID_L] = 8;
-    end
-
-    // ( 0x1458 .. 0x1460 )
-    if ( {address[RG:PAD5],{PAD5{1'b0}}} == 27'h1458   ) begin
-            src_channel = 12'b100000000;
+    // ( 0x1448 .. 0x1450 )
+    if ( {address[RG:PAD4],{PAD4{1'b0}}} == 27'h1448   ) begin
+            src_channel = 11'b10000000;
             src_data[PKT_DEST_ID_H:PKT_DEST_ID_L] = 6;
     end
 
-    // ( 0x1460 .. 0x1468 )
-    if ( {address[RG:PAD6],{PAD6{1'b0}}} == 27'h1460   ) begin
-            src_channel = 12'b000000001;
+    // ( 0x1450 .. 0x1458 )
+    if ( {address[RG:PAD5],{PAD5{1'b0}}} == 27'h1450   ) begin
+            src_channel = 11'b00000001;
             src_data[PKT_DEST_ID_H:PKT_DEST_ID_L] = 5;
     end
 
-    // ( 0x1468 .. 0x146c )
-    if ( {address[RG:PAD7],{PAD7{1'b0}}} == 27'h1468  && read_transaction  ) begin
-            src_channel = 12'b000001000;
+    // ( 0x1458 .. 0x145c )
+    if ( {address[RG:PAD6],{PAD6{1'b0}}} == 27'h1458  && read_transaction  ) begin
+            src_channel = 11'b00001000;
             src_data[PKT_DEST_ID_H:PKT_DEST_ID_L] = 3;
     end
 
     // ( 0x4000000 .. 0x6000000 )
-    if ( {address[RG:PAD8],{PAD8{1'b0}}} == 27'h4000000   ) begin
-            src_channel = 12'b001000000;
-            src_data[PKT_DEST_ID_H:PKT_DEST_ID_L] = 9;
+    if ( {address[RG:PAD7],{PAD7{1'b0}}} == 27'h4000000   ) begin
+            src_channel = 11'b00100000;
+            src_data[PKT_DEST_ID_H:PKT_DEST_ID_L] = 8;
     end
 
 end

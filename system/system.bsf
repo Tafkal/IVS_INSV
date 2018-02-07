@@ -41,8 +41,8 @@ agreement for further details.
 	(port
 		(pt 0 152)
 		(output)
-		(text "sdram_addr[11..0]" (rect 0 0 71 12)(font "Arial" (font_size 8)))
-		(text "sdram_addr[11..0]" (rect 4 141 106 152)(font "Arial" (font_size 8)))
+		(text "sdram_addr[12..0]" (rect 0 0 73 12)(font "Arial" (font_size 8)))
+		(text "sdram_addr[12..0]" (rect 4 141 106 152)(font "Arial" (font_size 8)))
 		(line (pt 0 152)(pt 96 152)(line_width 3))
 	)
 	(port

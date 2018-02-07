@@ -4,7 +4,7 @@
  * Machine generated for CPU 'workers_cpu_0' in SOPC Builder design 'system'
  * SOPC Builder design path: ../../system.sopcinfo
  *
- * Generated: Tue Jan 16 14:11:26 CET 2018
+ * Generated: Wed Feb 07 10:55:27 CET 2018
  */
 
 /*

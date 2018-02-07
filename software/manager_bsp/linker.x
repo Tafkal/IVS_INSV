@@ -4,7 +4,7 @@
  * Machine generated for CPU 'manager' in SOPC Builder design 'system'
  * SOPC Builder design path: ../../system.sopcinfo
  *
- * Generated: Tue Jan 16 14:39:06 CET 2018
+ * Generated: Tue Feb 06 20:49:21 CET 2018
  */
 
 /*
@@ -51,9 +51,9 @@
 MEMORY
 {
     shared_ocm : ORIGIN = 0x1000, LENGTH = 1024
-    reset : ORIGIN = 0x4008000, LENGTH = 32
-    sdram : ORIGIN = 0x4008020, LENGTH = 1048544
-    shared_sdram : ORIGIN = 0x4108000, LENGTH = 32473088
+    reset : ORIGIN = 0x5200000, LENGTH = 32
+    sdram : ORIGIN = 0x5200020, LENGTH = 4194272
+    shared_sdram : ORIGIN = 0x5600000, LENGTH = 10485760
 }
 
 /* Define symbols for each memory base-address */
@@ -387,7 +387,7 @@ SECTIONS
 /*
  * Don't override this, override the __alt_stack_* symbols instead.
  */
-__alt_data_end = 0x4108000;
+__alt_data_end = 0x5600000;
 
 /*
  * The next two symbols define the location of the default stack.  You can
@@ -403,4 +403,4 @@ PROVIDE( __alt_stack_limit   = __alt_stack_base );
  * Override this symbol to put the heap in a different memory.
  */
 PROVIDE( __alt_heap_start    = end );
-PROVIDE( __alt_heap_limit    = 0x4108000 );
+PROVIDE( __alt_heap_limit    = 0x5600000 );

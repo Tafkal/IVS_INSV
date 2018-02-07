@@ -2,9 +2,9 @@
 <sch:Settings xmlns:sch="http://www.altera.com/embeddedsw/bsp/schema">
         <BspType>hal</BspType>
         <BspVersion>default</BspVersion>
-        <BspGeneratedTimeStamp>Jan 20, 2018 2:03:55 PM</BspGeneratedTimeStamp>
-        <BspGeneratedUnixTimeStamp>1516453435043</BspGeneratedUnixTimeStamp>
-        <BspGeneratedLocation>E:\Fax\IVS\IVS_projekat\Projekat_v2\software\worker3_bsp</BspGeneratedLocation>
+        <BspGeneratedTimeStamp>Feb 7, 2018 11:14:54 AM</BspGeneratedTimeStamp>
+        <BspGeneratedUnixTimeStamp>1517998494603</BspGeneratedUnixTimeStamp>
+        <BspGeneratedLocation>E:\Fax\IVS\IVS_projekat\Projekat_v3\software\worker3_bsp</BspGeneratedLocation>
         <BspSettingsFile>settings.bsp</BspSettingsFile>
         <SopcDesignFile>..\..\system.sopcinfo</SopcDesignFile>
         <JdiFile>default</JdiFile>
@@ -905,34 +905,34 @@
                 <attributes>printable</attributes>
         </MemoryMap>
         <MemoryMap>
+                <slaveDescriptor>sdram</slaveDescriptor>
+                <addressRange>0x14000000 - 0x15FFFFFF</addressRange>
+                <addressSpan>33554432</addressSpan>
+                <attributes>memory</attributes>
+        </MemoryMap>
+        <MemoryMap>
                 <slaveDescriptor>ack_fifo_in_csr</slaveDescriptor>
-                <addressRange>0x10000000 - 0x1000001F</addressRange>
+                <addressRange>0x20000000 - 0x2000001F</addressRange>
                 <addressSpan>32</addressSpan>
                 <attributes/>
         </MemoryMap>
         <MemoryMap>
                 <slaveDescriptor>ack_fifo_in</slaveDescriptor>
-                <addressRange>0x10000020 - 0x10000023</addressRange>
+                <addressRange>0x20000020 - 0x20000023</addressRange>
                 <addressSpan>4</addressSpan>
                 <attributes/>
         </MemoryMap>
         <MemoryMap>
                 <slaveDescriptor>shared_ocm</slaveDescriptor>
-                <addressRange>0x10001000 - 0x100013FF</addressRange>
+                <addressRange>0x20001000 - 0x200013FF</addressRange>
                 <addressSpan>1024</addressSpan>
                 <attributes>memory</attributes>
         </MemoryMap>
         <MemoryMap>
                 <slaveDescriptor>mutex</slaveDescriptor>
-                <addressRange>0x10001458 - 0x1000145F</addressRange>
+                <addressRange>0x20001448 - 0x2000144F</addressRange>
                 <addressSpan>8</addressSpan>
                 <attributes/>
-        </MemoryMap>
-        <MemoryMap>
-                <slaveDescriptor>sdram</slaveDescriptor>
-                <addressRange>0x14000000 - 0x15FFFFFF</addressRange>
-                <addressSpan>33554432</addressSpan>
-                <attributes>memory</attributes>
         </MemoryMap>
         <LinkerSection>
                 <sectionName>.text</sectionName>
