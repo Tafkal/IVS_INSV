@@ -1,11 +1,12 @@
 /**
- * @file worker0.c
- * @brief Programing code for the worker processor
+ * @file worker3.c
+ * @brief Programming code for the worker processor
  *
  * All workers are processors with the following tasks:
  * 	- processing of the region assigned by the manager and placing the new
  * 	elements into the output matrix stored in SDRAM
  * 	- notifying the manager that the task is done
+ *
  * @date 2018
  * @authors Ivana Nikolic, Stefan Vukcevic
  */
@@ -92,15 +93,17 @@ int16_t _fp_mult(int16_t a, int16_t b)
  */
 int main()
 {
-	// variables that pass through the rows and columns
-	// of the assigned matrix part; the width is set to one
-	// because the most left and right columns of all task
-	// should not be changed
+	/* variables that pass through the rows and columns
+	 * of the assigned matrix part; the width is set to one
+	 * because the most left and right columns of all task
+	 * should not be changed
+	 */
 	int h = 0;
 	int w = 1;
 
-	// variables that pass through the rows and columns of
-	// the input matrix calculated based on the varibles w and h
+	/* variables that pass through the rows and columns of
+	 * the input matrix calculated based on the varibles w and h
+	 */
 	uint32_t x, y;
 
 	/* variable in which all the information the manager
@@ -110,7 +113,7 @@ int main()
 	item_t item = { { 0 } };
 
 	/* return value of the ringbuf_dequeue function
-	 * necessarry for the start of the matrix part processing
+	 * necessary for the start of the matrix part processing
 	 */
 	uint8_t retval;
 
@@ -128,7 +131,7 @@ int main()
 			usleep(1000); // 1 ms
 		}
 
-		// if the mutex is successfully taken, get an assignement
+		// if the mutex is successfully taken, get an assignment
 		retval = ringbuf_dequeue(&item);
 
 		// release the mutex
@@ -175,6 +178,7 @@ int main()
 						if ((heat_srcs[src].xpos == x) && (heat_srcs[src].ypos == y))
 						{
 							is_source = 1;
+							break;
 						}
 					}
 
@@ -184,7 +188,7 @@ int main()
 
 					// set the element in the output matrix based
 					// on the value of item.input_matrix variable
-					if (item.input_matrix == MAT_BUF1_ADDR)
+					if (item.input_matrix == BUF_1)
 					{
 						matrix2[id] = matrix1[id];
 
@@ -210,9 +214,12 @@ int main()
 							matrix1[id] += _fp_mult(*c_y, (matrix2[id + *width] + matrix2[id - *width] - (matrix2[id] << 1)));
 						}
 					}
+					w++;
 				}
+				w = 1;
+				h++;
 			}
-
+			h = 0;
 			// notify the manager that the task is completed
 			altera_avalon_fifo_write_fifo(ACK_FIFO_IN_BASE, ACK_FIFO_IN_CSR_BASE, item.id);
 		}

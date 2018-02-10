@@ -2,8 +2,8 @@
 <sch:Settings xmlns:sch="http://www.altera.com/embeddedsw/bsp/schema">
         <BspType>hal</BspType>
         <BspVersion>default</BspVersion>
-        <BspGeneratedTimeStamp>Feb 7, 2018 11:03:23 AM</BspGeneratedTimeStamp>
-        <BspGeneratedUnixTimeStamp>1517997803685</BspGeneratedUnixTimeStamp>
+        <BspGeneratedTimeStamp>Feb 9, 2018 2:11:29 PM</BspGeneratedTimeStamp>
+        <BspGeneratedUnixTimeStamp>1518181889370</BspGeneratedUnixTimeStamp>
         <BspGeneratedLocation>E:\Fax\IVS\IVS_projekat\Projekat_v3\software\worker1_bsp</BspGeneratedLocation>
         <BspSettingsFile>settings.bsp</BspSettingsFile>
         <SopcDesignFile>..\..\system.sopcinfo</SopcDesignFile>

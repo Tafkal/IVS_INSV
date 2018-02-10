@@ -1,15 +1,15 @@
 /**
  * @file manager.c
- * @brief Programing code for the main processor
+ * @brief Programming code for the main processor
  *
  * The manager is a processor with the following tasks:
  * 	- reading of the matrices parameters and the heat sources values
- * 	and posiitons from the computer
+ * 	and positions from the computer
  * 	- initializing two matrices in SDRAM for heat transfer calculation
  *	- organization of the task division between workers in the On-Chip memory;
  *	the task must contain the information of the region that the worker must
- *	process and the information from which matrix to read the elements, ie.
- *	to which matric to store the new elements
+ *	process and the information from which matrix to read the elements, i.e.
+ *	to which matrix to store the new elements
  *	- sending the calculated heat transfer map to the computer
  *
  * @date 2018
@@ -71,19 +71,19 @@ alt_mutex_dev* mutex;
  */
 int main()
 {
-	/* variable necessarry to pack all the information
+	/* variable necessary to pack all the information
 	 * the manager has to send to the workers;
 	 * it represents a task for one worker
 	 */
 	item_t item = { { 0 } };
 
 	/* return value of the ringbuf_enqueue function
-	 * necessarry for new task generation
+	 * necessary for new task generation
 	 */
 	uint8_t retval;
 
 	/* variables that tracks the generation
-	 * and completition of the tasks
+	 * and completion of the tasks
 	 */
 	uint32_t assigned = 0;
 	uint32_t processing = 0;
@@ -94,7 +94,7 @@ int main()
 	/* the number of iteration for heat transfer calculation */
 	uint32_t iter = 0;
 
-	/* variable necessarry to store the acknowledment
+	/* variable necessary to store the acknowledgment
 	 * from the worker
 	 */
 	uint32_t msg;
@@ -106,21 +106,22 @@ int main()
 	char src[64];
 
 	/* .bin file name to which the final heat
-	 * transfer map will be writen
+	 * transfer map will be written
 	 */
 	char fout[64];
 
 	/* temporary variable for saving used .bin file names */
 	char tmp[64];
 
-	/* varibles that indicate from which matrix is currently
-	 * being read, and to which one is currently being writen
+	/* variables that indicate from which matrix is currently
+	 * being read, and to which one is currently being written
 	 */
-	int32_t input_mat = MAT_BUF1_ADDR;
-	int32_t output_mat = MAT_BUF2_ADDR;
+	int32_t input_mat = BUF_1;
+	int32_t output_mat = BUF_2;
 
 	// mutex initialization
 	mutex = altera_avalon_mutex_open(MUTEX_NAME);
+	altera_avalon_mutex_lock(mutex, 0x5A);
 
 	// fifo initialization
 	altera_avalon_fifo_init(ACK_FIFO_OUT_CSR_BASE, 0, 2, 12);
@@ -151,7 +152,7 @@ int main()
 		scanf("%s", tmp);
 		snprintf(src, sizeof(src), "%s/%s", ALTERA_HOSTFS_NAME, tmp);
 
-		// atach a pointer to a file
+		// add a pointer to a file
 		p_file = fopen(src, "rb");
 
 		// read the heat transfer coefficients and the number
@@ -163,11 +164,11 @@ int main()
 		// read the heat sources
 		fread(heat_srcs, sizeof(heat_src_t), *nr_heat_src, p_file);
 
-		// deatach the pointer from the file
+		// remove the pointer from the file
 		fclose(p_file);
 
 		// ask the user to write the .bin file name
-		// to which the final heat transfer map will be writen
+		// to which the final heat transfer map will be written
 		printf("Enter output file name ");
 		scanf("%s", tmp);
 		snprintf(fout, sizeof(fout), "%s/%s", ALTERA_HOSTFS_NAME, tmp);
@@ -176,7 +177,7 @@ int main()
 		printf("Enter number of iterations ");
 		scanf("%lu", &iter);
 
-		// calucalte the number of matrix elements
+		// calculate the number of matrix elements
 		matrix_size = *width * *height;
 
 		// initialize both matrices
@@ -200,7 +201,7 @@ int main()
 		// begin the heat transfer calculation
 		for (int it = 0; it < iter; it++)
 		{
-			// assing the number of tasks that can be stored
+			// assign the number of tasks that can be stored
 			// into the ringbuffer; it is chosen to divide the
 			// matrix into the horizontal parts
 			do
@@ -216,7 +217,7 @@ int main()
 				retval = ringbuf_enqueue(&item);
 
 				// if the ringbuffer is not full,
-				// the assignement was successful
+				// the assignment was successful
 				if (retval != 1)
 				{
 					assigned++;
@@ -224,7 +225,7 @@ int main()
 				}
 			} while (retval != 1);
 
-			// realase the mutex (it was given to the manager
+			// release the mutex (it was given to the manager
 			// by default in the .qsys files
 			altera_avalon_mutex_unlock(mutex);
 
@@ -254,7 +255,7 @@ int main()
 					item.input_matrix = input_mat;
 					//item.output_matrix = output_mat;
 
-					// retval is not necessarry here because we are certain
+					// retval is not necessary here because we are certain
 					// there is a place for a new task in the ringbuffer
 					ringbuf_enqueue(&item);
 
@@ -272,6 +273,8 @@ int main()
 			int32_t swap = input_mat;
 			input_mat = output_mat;
 			output_mat = swap;
+
+			assigned = 0;
 		}
 
 #ifdef MEASURE_PERFORMANCE
@@ -280,7 +283,7 @@ int main()
 
 		printf("MATRIX BEGIN\n");
 
-		// atach a pointer to a file
+		// add a pointer to a file
 		p_file = fopen(fout, "wb");
 
 		// write the matrix dimensions
@@ -301,7 +304,7 @@ int main()
 		// flush the pointer
 		fflush(p_file);
 
-		// deatach the pointer from the file
+		// remove the pointer from the file
 		fclose(p_file);
 
 		printf("MATRIX END\n");

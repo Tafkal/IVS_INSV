@@ -1,8 +1,8 @@
 /**
  * @file common.h
- * @brief Necessarry defines and structures
+ * @brief Necessary defines and structures
  *
- * This file has the definitions of the adresses where all the parameters and
+ * This file has the definitions of the addresses where all the parameters and
  * matrices will be stored.
  *
  * @date 2018
@@ -22,7 +22,7 @@
 #define MAT_BUFFER_BASE	(SHARED_SDRAM_REGION_BASE + 0x80000000)
 
 /* OFFSETS */
-/* matrix diemnsions */
+/* matrix dimensions */
 #define MAT_WIDTH_OFFSET	(0x00)
 #define MAT_HEIGHT_OFFSET	(0x04)
 
@@ -48,7 +48,7 @@
 #define MAT_WIDTH_ADDR		(MAT_PARAM_BASE + MAT_WIDTH_OFFSET)
 #define MAT_HEIGHT_ADDR		(MAT_PARAM_BASE + MAT_HEIGHT_OFFSET)
 
-/* heat transfer coeffiecients */
+/* heat transfer coefficients */
 #define MAT_X_COEFF_ADDR	(MAT_PARAM_BASE + MAT_X_COEFF_OFFSET)
 #define MAT_Y_COEFF_ADDR	(MAT_PARAM_BASE + MAT_Y_COEFF_OFFSET)
 
@@ -65,7 +65,7 @@
 #define MAT_BUF1_ADDR		(MAT_BUFFER_BASE + MAT_BUF1_OFFSET)
 #define MAT_BUF2_ADDR		(MAT_BUFFER_BASE + MAT_BUF2_OFFSET)
 
-/* heat sources structure cointains:
+/* heat sources structure contains:
  * 	xpos - row where the heat source is located
  * 	ypos - column where the heat source is located
  * 	heat - value of the heat source corresponding to xpos and ypos
@@ -82,5 +82,11 @@ typedef struct HEAT_SRC
 
 /* total number of tasks */
 #define TOTAL_NUM_OF_TASKS  	(32)
+
+/* defines that indicate from which matrix is currently
+ * being read, and to which one is currently being written
+ */
+#define BUF_1				(1)
+#define BUF_2				(2)
 
 #endif /* COMMON_H_ */
