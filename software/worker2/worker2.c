@@ -65,6 +65,10 @@ heat_src_t *heat_srcs = (heat_src_t *)MAT_HEAT_SOURCES_ADDR;
  */
 #define ONE    (1 << FP_FRAC)
 
+/* worker's ID
+ */
+#define MY_ID	(2)
+
 /* mutex for the synchronization of the processors */
 alt_mutex_dev* mutex;
 
@@ -221,7 +225,7 @@ int main()
 			}
 			h = 0;
 			// notify the manager that the task is completed
-			altera_avalon_fifo_write_fifo(ACK_FIFO_IN_BASE, ACK_FIFO_IN_CSR_BASE, item.id);
+			altera_avalon_fifo_write_fifo(ACK_FIFO_IN_BASE, ACK_FIFO_IN_CSR_BASE, MY_ID);
 		}
 	}
 }

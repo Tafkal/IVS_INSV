@@ -81,7 +81,7 @@ typedef struct HEAT_SRC
 #define MAX_HEAT_SRCS		(5)
 
 /* total number of tasks */
-#define TOTAL_NUM_OF_TASKS  	(32)
+#define TOTAL_NUM_OF_TASKS  	(16)
 
 /* defines that indicate from which matrix is currently
  * being read, and to which one is currently being written

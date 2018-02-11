@@ -223,7 +223,7 @@ int main()
 					assigned++;
 					processing++;
 				}
-			} while (retval != 1);
+			} while ((retval != 1) && (assigned < TOTAL_NUM_OF_TASKS));
 
 			// release the mutex (it was given to the manager
 			// by default in the .qsys files
@@ -235,6 +235,10 @@ int main()
 				// wait until a task is processed
 				while(!altera_avalon_read_fifo(ACK_FIFO_OUT_BASE,
 									ACK_FIFO_OUT_CSR_BASE, &msg));
+
+				// test line of code to check if all started worker processor
+				// are really working
+				// printf("%lu", msg);
 
 				// decrease the processing variable because
 				// a task is finished
